@@ -5,7 +5,6 @@ const Header = () => {
 
   const handleLinkClick = () => setIsOpen(false);
 
-  // Sections for mapping
   const sections = ["features", "demo", "team", "gallery", "contact"];
 
   return (
@@ -14,11 +13,16 @@ const Header = () => {
       style={{
         backgroundColor: "#ffffff",
         backgroundImage: `
+          /* Radial gradients for water effect */
           radial-gradient(circle at top right, rgba(70, 130, 180, 0.5), transparent 70%),
-          radial-gradient(circle at bottom left, rgba(0, 191, 255, 0.3), transparent 70%)
+          radial-gradient(circle at bottom left, rgba(0, 191, 255, 0.3), transparent 70%),
+          /* Subtle grid in bottom-right */
+          linear-gradient(to right, #d1d5db 1px, transparent 1px),
+          linear-gradient(to bottom, #d1d5db 1px, transparent 1px)
         `,
-        backdropFilter: "blur(80px)",
         backgroundRepeat: "no-repeat",
+        backdropFilter: "blur(60px)",
+        backgroundSize: "100% 100%, 100% 100%, 50px 50px, 50px 50px", // grid size 50px
       }}
     >
       <div className="container flex items-center justify-between px-6 py-4 mx-auto">
