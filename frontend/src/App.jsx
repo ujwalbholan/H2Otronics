@@ -1,12 +1,17 @@
-import "./App.css";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
 
-function App() {
-
+const App = () => {
   return (
-    <>
-      <h1 class="text-3xl font-bold underline bg-amber-300">Hello world!</h1>
-    </>
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <main className="flex-grow">
+        <Home />
+      </main>
+      <Footer />
+    </div>
   );
-}
+};
 
 export default App;
