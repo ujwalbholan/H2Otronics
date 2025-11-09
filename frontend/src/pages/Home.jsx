@@ -34,14 +34,3 @@ const Home = () => {
 };
 
 export default Home;
-
-<div className="relative w-full min-h-screen bg-white">
-  {/* Cool Blue Glow Right */}
-  <div className="absolute inset-0 -z-1" />
-  <HeroSection />
-  <FeaturesSection />
-  <DemoSection />
-  <TeamSection />
-  <GallerySection />
-  <ContactSection />
-</div>;
