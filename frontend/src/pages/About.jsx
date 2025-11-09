@@ -21,12 +21,12 @@ const About = () => {
             technology to provide reliable, scalable, and user-friendly
             solutions for homes, offices, and industrial water management.
           </p>
-          <div className="flex justify-center gap-6 mt-6">
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
             <WaterButton to="/demo">Live Demo</WaterButton>
 
             <Link
               to="/features"
-              className="px-6 py-3 transition bg-gray-200 rounded-lg hover:bg-gray-300"
+              className="px-8 py-3 text-blue-600 transition-all duration-300 bg-white border border-blue-600 rounded-lg shadow hover:bg-blue-50"
             >
               Learn More
             </Link>
