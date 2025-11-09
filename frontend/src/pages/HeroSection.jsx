@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import Container from "../components/Container";
 import { Link } from "react-router-dom";
+import WaterButton from "../components/WaterButton";
 
 const containerVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -10,7 +11,7 @@ const containerVariants = {
     transition: {
       duration: 1,
       ease: "easeOut",
-      staggerChildren: 0.2, // smooth stagger
+      staggerChildren: 0.2,
     },
   },
 };
@@ -50,12 +51,8 @@ const HeroSection = () => {
             className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6"
             variants={itemVariants}
           >
-            <Link
-              to="/demo"
-              className="px-8 py-3 text-white transition-all duration-300 bg-blue-600 rounded-lg shadow hover:bg-blue-700"
-            >
-              Live Demo
-            </Link>
+            <WaterButton to="/demo">Live Demo</WaterButton>
+
             <Link
               to="/features"
               className="px-8 py-3 text-blue-600 transition-all duration-300 bg-white border border-blue-600 rounded-lg shadow hover:bg-blue-50"

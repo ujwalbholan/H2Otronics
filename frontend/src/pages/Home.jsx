@@ -1,9 +1,7 @@
 import HeroSection from "./HeroSection";
 import FeaturesSection from "./FeaturesSection";
-import DemoSection from "./DemoSection";
 import TeamSection from "./TeamSection";
-import GallerySection from "./GallerySection";
-import ContactSection from "./ContactSection";
+
 
 const Home = () => {
   return (

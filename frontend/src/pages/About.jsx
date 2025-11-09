@@ -1,5 +1,6 @@
 import Container from "../components/Container";
 import { Link } from "react-router-dom";
+import WaterButton from "../components/WaterButton";
 
 const About = () => {
   return (
@@ -21,12 +22,8 @@ const About = () => {
             solutions for homes, offices, and industrial water management.
           </p>
           <div className="flex justify-center gap-6 mt-6">
-            <Link
-              to="/demo"
-              className="px-6 py-3 text-white transition bg-blue-600 rounded-lg hover:bg-blue-700"
-            >
-              Live Demo
-            </Link>
+            <WaterButton to="/demo">Live Demo</WaterButton>
+
             <Link
               to="/features"
               className="px-6 py-3 transition bg-gray-200 rounded-lg hover:bg-gray-300"
