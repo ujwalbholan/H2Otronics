@@ -1,4 +1,4 @@
-import Container from "./Container";
+import Container from "../components/Container";
 
 const team = [
   { name: "Tamang Sujan", role: "Hardware Integration" },
