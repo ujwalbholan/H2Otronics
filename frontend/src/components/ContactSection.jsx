@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Container from "./container";
+import Container from "./Container";
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
