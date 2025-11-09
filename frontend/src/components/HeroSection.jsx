@@ -3,7 +3,7 @@ import Container from "./container";
 const HeroSection = () => {
   return (
     <Container>
-      <section className="flex flex-col items-center justify-center w-full min-h-[80vh] bg-blue-100 text-center px-4 md:px-8">
+      <section className="flex flex-col items-center justify-center w-full min-h-[80vh] text-center px-4 md:px-8">
         <div className="max-w-4xl">
           <h2 className="mb-4 text-3xl font-bold leading-tight text-gray-800 md:text-5xl">
             Smart IoT Water Tank Monitoring System

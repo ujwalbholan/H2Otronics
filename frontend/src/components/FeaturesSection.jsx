@@ -22,7 +22,7 @@ const features = [
 const FeaturesSection = () => {
   return (
     <Container>
-      <section id="features" className="w-full py-12 bg-white md:py-20">
+      <section id="features" className="w-full py-12 md:py-20">
         <div className="max-w-6xl px-4 mx-auto text-center">
           <h3 className="mb-10 text-2xl font-bold text-gray-800 md:text-3xl">
             Key Features

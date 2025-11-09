@@ -3,37 +3,51 @@ import React, { useState } from "react";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleLinkClick = () => setIsOpen(false);
+
+  // Sections for mapping
+  const sections = ["features", "demo", "team", "gallery", "contact"];
+
   return (
-    <header className="sticky top-0 text-white bg-blue-600 shadow-2xl">
+    <header
+      className="sticky top-0 z-30 font-sans shadow-lg"
+      style={{
+        backgroundColor: "#ffffff",
+        backgroundImage: `
+          radial-gradient(circle at top right, rgba(70, 130, 180, 0.5), transparent 70%),
+          radial-gradient(circle at bottom left, rgba(0, 191, 255, 0.3), transparent 70%)
+        `,
+        backdropFilter: "blur(80px)",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <div className="container flex items-center justify-between px-6 py-4 mx-auto">
-        <a href="/" className="text-2xl font-bold">
-          H₂Otronics
+        {/* Logo */}
+        <a
+          href="/"
+          className="flex items-center space-x-2 text-2xl font-bold text-blue-800"
+        >
+          <span>H₂Otronics</span>
         </a>
 
-        {/* Desktop Nav */}
-        <nav className="hidden space-x-6 md:flex">
-          <a href="#features" className="hover:underline">
-            Features
-          </a>
-          <a href="#demo" className="hover:underline">
-            Demo
-          </a>
-          <a href="#team" className="hover:underline">
-            Team
-          </a>
-          <a href="#gallery" className="hover:underline">
-            Gallery
-          </a>
-          <a href="#contact" className="hover:underline">
-            Contact
-          </a>
+        {/* Desktop Navigation */}
+        <nav className="hidden space-x-6 text-blue-800 md:flex">
+          {sections.map((section) => (
+            <a
+              key={section}
+              href={`#${section}`}
+              className="relative hover:text-blue-500 transition-colors duration-300 after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-blue-400 hover:after:w-full after:transition-all after:duration-300"
+            >
+              {section.charAt(0).toUpperCase() + section.slice(1)}
+            </a>
+          ))}
         </nav>
 
         {/* Mobile Hamburger */}
         <div className="md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="focus:outline-none"
+            className="text-blue-800 focus:outline-none"
           >
             {isOpen ? (
               <svg
@@ -41,7 +55,6 @@ const Header = () => {
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   strokeLinecap="round"
@@ -56,7 +69,6 @@ const Header = () => {
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   strokeLinecap="round"
@@ -72,22 +84,17 @@ const Header = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <nav className="px-6 py-4 space-y-2 bg-blue-500 md:hidden">
-          <a href="#features" className="block hover:underline">
-            Features
-          </a>
-          <a href="#demo" className="block hover:underline">
-            Demo
-          </a>
-          <a href="#team" className="block hover:underline">
-            Team
-          </a>
-          <a href="#gallery" className="block hover:underline">
-            Gallery
-          </a>
-          <a href="#contact" className="block hover:underline">
-            Contact
-          </a>
+        <nav className="px-6 py-4 space-y-3 text-blue-800 md:hidden">
+          {sections.map((section) => (
+            <a
+              key={section}
+              href={`#${section}`}
+              onClick={handleLinkClick}
+              className="block px-4 py-2 transition-colors duration-300 rounded hover:bg-blue-100 hover:text-blue-600"
+            >
+              {section.charAt(0).toUpperCase() + section.slice(1)}
+            </a>
+          ))}
         </nav>
       )}
     </header>

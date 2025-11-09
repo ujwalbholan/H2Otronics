@@ -7,7 +7,22 @@ import ContactSection from "../components/ContactSection";
 
 const Home = () => {
   return (
-    <div>
+    <div className="relative w-full min-h-screen">
+      <div
+        className="absolute inset-0 -z-1"
+        style={{
+          background: "#ffffff",
+          backgroundImage: `
+        radial-gradient(
+          circle at top right,
+          rgba(70, 130, 180, 0.5),
+          transparent 70%
+        )
+      `,
+          filter: "blur(80px)",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
       <HeroSection />
       <FeaturesSection />
       <DemoSection />
@@ -19,3 +34,14 @@ const Home = () => {
 };
 
 export default Home;
+
+<div className="relative w-full min-h-screen bg-white">
+  {/* Cool Blue Glow Right */}
+  <div className="absolute inset-0 -z-1" />
+  <HeroSection />
+  <FeaturesSection />
+  <DemoSection />
+  <TeamSection />
+  <GallerySection />
+  <ContactSection />
+</div>;
