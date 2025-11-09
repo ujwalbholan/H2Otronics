@@ -1,29 +1,33 @@
+import Container from "./container";
+
 const HeroSection = () => {
   return (
-    <section className="bg-blue-100 py-20">
-      <div className="container mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-4">
-          Smart IoT Water Tank Monitoring System
-        </h2>
-        <p className="text-lg mb-6">
-          Monitor and control your water tank remotely in real time.
-        </p>
-        <div className="space-x-4">
-          <a
-            href="#demo"
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
-          >
-            Live Demo
-          </a>
-          <a
-            href="#features"
-            className="bg-gray-200 px-6 py-3 rounded-lg hover:bg-gray-300"
-          >
-            Learn More
-          </a>
+    <Container>
+      <section className="flex flex-col items-center justify-center w-full min-h-[80vh] bg-blue-100 text-center px-4 md:px-8">
+        <div className="max-w-4xl">
+          <h2 className="mb-4 text-3xl font-bold leading-tight text-gray-800 md:text-5xl">
+            Smart IoT Water Tank Monitoring System
+          </h2>
+          <p className="mb-8 text-base text-gray-700 md:text-lg">
+            Monitor and control your water tank remotely in real time with smart automation and live insights.
+          </p>
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+            <a
+              href="#demo"
+              className="px-8 py-3 text-white transition-all duration-300 bg-blue-600 rounded-lg shadow hover:bg-blue-700"
+            >
+              Live Demo
+            </a>
+            <a
+              href="#features"
+              className="px-8 py-3 text-blue-600 transition-all duration-300 bg-white border border-blue-600 rounded-lg shadow hover:bg-blue-50"
+            >
+              Learn More
+            </a>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </Container>
   );
 };
 

@@ -1,3 +1,5 @@
+import Container from "./container";
+
 const team = [
   { name: "Tamang Sujan", role: "Hardware Integration" },
   { name: "Mandal Mohan", role: "Web/API Developer" },
@@ -8,22 +10,38 @@ const team = [
 
 const TeamSection = () => {
   return (
-    <section id="team" className="py-20 bg-white">
-      <div className="container mx-auto text-center">
-        <h3 className="text-3xl font-bold mb-10">Our Team</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+    <Container>
+      <section id="team" className="w-full py-20 bg-white ">
+        <div className="mb-12 text-center">
+          <h3 className="text-3xl font-bold text-gray-800 md:text-4xl">
+            Our Team
+          </h3>
+          <p className="mt-2 text-sm text-gray-600 md:text-base">
+            Meet the brilliant minds behind H₂Otronics
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 justify-items-center -z-1">
           {team.map((member, idx) => (
             <div
               key={idx}
-              className="p-6 bg-blue-50 rounded-lg shadow hover:shadow-lg transition"
+              className="w-full max-w-[200px] p-6 bg-blue-50 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
             >
-              <h4 className="text-xl font-semibold mb-1">{member.name}</h4>
-              <p>{member.role}</p>
+              <div className="flex flex-col items-center">
+                {/* You can later add profile images here */}
+                <div className="flex items-center justify-center w-20 h-20 mb-4 text-xl font-semibold text-blue-700 bg-blue-200 rounded-full">
+                  {member.name.charAt(0)}
+                </div>
+                <h4 className="mb-1 text-lg font-semibold text-gray-800">
+                  {member.name}
+                </h4>
+                <p className="text-sm text-gray-600">{member.role}</p>
+              </div>
             </div>
           ))}
         </div>
-      </div>
-    </section>
+      </section>
+    </Container>
   );
 };
 

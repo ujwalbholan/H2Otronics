@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Container from "./container";
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -15,49 +16,58 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-white">
-      <div className="container mx-auto text-center">
-        <h3 className="text-3xl font-bold mb-8">Contact Us</h3>
-        <form
-          onSubmit={handleSubmit}
-          className="max-w-lg mx-auto flex flex-col gap-4"
-        >
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            value={form.name}
-            onChange={handleChange}
-            className="p-3 border border-gray-300 rounded-lg"
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            className="p-3 border border-gray-300 rounded-lg"
-            required
-          />
-          <textarea
-            name="message"
-            placeholder="Message"
-            value={form.message}
-            onChange={handleChange}
-            className="p-3 border border-gray-300 rounded-lg"
-            rows="5"
-            required
-          ></textarea>
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
-          >
-            Send Message
-          </button>
-        </form>
-      </div>
-    </section>
+    <Container>
+      <section id="contact" className="w-full py-12 md:py-20">
+        <div className="max-w-2xl px-4 mx-auto text-center">
+          <h3 className="mb-6 text-2xl font-bold text-gray-800 md:text-3xl">
+            Contact Us
+          </h3>
+
+          <p className="mb-8 text-gray-600">
+            Have questions or feedback? We’d love to hear from you!
+          </p>
+
+          <form onSubmit={handleSubmit} className="flex flex-col w-full gap-4">
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              value={form.name}
+              onChange={handleChange}
+              className="p-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Your Email"
+              value={form.email}
+              onChange={handleChange}
+              className="p-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+
+            <textarea
+              name="message"
+              placeholder="Your Message"
+              value={form.message}
+              onChange={handleChange}
+              className="p-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows="5"
+              required
+            ></textarea>
+
+            <button
+              type="submit"
+              className="px-6 py-3 text-white transition-all bg-blue-600 rounded-lg hover:bg-blue-700"
+            >
+              Send Message
+            </button>
+          </form>
+        </div>
+      </section>
+    </Container>
   );
 };
 

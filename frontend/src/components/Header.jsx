@@ -4,7 +4,7 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="text-white bg-blue-600 shadow-md">
+    <header className="sticky top-0 text-white bg-blue-600 shadow-2xl">
       <div className="container flex items-center justify-between px-6 py-4 mx-auto">
         <a href="/" className="text-2xl font-bold">
           H₂Otronics

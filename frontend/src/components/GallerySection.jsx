@@ -1,3 +1,5 @@
+import Container from "./container";
+
 const images = [
   "/images/prototype1.jpg",
   "/images/prototype2.jpg",
@@ -6,21 +8,30 @@ const images = [
 
 const GallerySection = () => {
   return (
-    <section id="gallery" className="py-20 bg-gray-100">
-      <div className="container mx-auto text-center">
-        <h3 className="text-3xl font-bold mb-10">Gallery</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {images.map((img, idx) => (
-            <img
-              key={idx}
-              src={img}
-              alt="Prototype"
-              className="rounded-lg shadow hover:scale-105 transition-transform"
-            />
-          ))}
+    <Container>
+      <section id="gallery" className="w-full py-12 bg-gray-100 md:py-20">
+        <div className="max-w-6xl px-4 mx-auto text-center">
+          <h3 className="mb-10 text-2xl font-bold text-gray-800 md:text-3xl">
+            Gallery
+          </h3>
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {images.map((img, idx) => (
+              <div
+                key={idx}
+                className="overflow-hidden transition-all duration-300 shadow-md rounded-xl hover:shadow-xl"
+              >
+                <img
+                  src={img}
+                  alt={`Gallery ${idx + 1}`}
+                  className="object-cover w-full h-64 transition-transform duration-300 transform hover:scale-105"
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </Container>
   );
 };
 
