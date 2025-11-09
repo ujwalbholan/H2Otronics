@@ -9,13 +9,13 @@ const About = () => {
           <h2 className="mb-6 text-3xl font-bold text-blue-800 md:text-4xl">
             About Us
           </h2>
-          <p className="mb-8 text-lg text-gray-700 md:text-xl">
+          <p className="mb-8 text-lg text-gray-700 md:text-xl text-justify">
             H₂Otronics is a cutting-edge IoT water tank monitoring system
             designed to make water management smart, efficient, and hassle-free.
             Our platform enables real-time monitoring of water levels, automatic
             pump control, and instant notifications for any critical changes.
           </p>
-          <p className="mb-6 text-lg text-gray-700 md:text-xl">
+          <p className="mb-6 text-lg text-gray-700 md:text-xl text-justify">
             Our team combines expertise in hardware, web development, and sensor
             technology to provide reliable, scalable, and user-friendly
             solutions for homes, offices, and industrial water management.

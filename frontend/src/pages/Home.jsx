@@ -25,10 +25,7 @@ const Home = () => {
       />
       <HeroSection />
       <FeaturesSection />
-      <DemoSection />
       <TeamSection />
-      <GallerySection />
-      <ContactSection />
     </div>
   );
 };
