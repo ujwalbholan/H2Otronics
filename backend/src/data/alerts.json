@@ -1,0 +1,20 @@
+[
+  {
+    "tankId": "tank_01",
+    "type": "LOW",
+    "level": 20,
+    "time": "3:07:20 PM"
+  },
+  {
+    "tankId": "tank_01",
+    "type": "LOW",
+    "level": 25,
+    "time": "5:23:00 PM"
+  },
+  {
+    "tankId": "tank_01",
+    "type": "LOW",
+    "level": 15,
+    "time": "5:46:45 PM"
+  }
+]

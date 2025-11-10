@@ -1,0 +1,5 @@
+{
+  "lowThreshold": 25,
+  "highThreshold": 90,
+  "autoPump": true
+}
