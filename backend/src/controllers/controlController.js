@@ -24,7 +24,7 @@ export const queueCommand = (tankId, command) => {
   };
   commands.push(newCmd);
   writeCommands(commands);
-  console.log(`⚙️ Auto-command queued: ${tankId} → ${command}`);
+  console.log(` Auto-command queued: ${tankId} → ${command}`);
 };
 
 export const addCommand = (req, res) => {
@@ -48,6 +48,9 @@ export const addCommand = (req, res) => {
 
 export const getCommandsForTank = (req, res) => {
   const tankId = req.query.tankId;
+
+  console.log(tankId);
+
   if (!tankId) {
     return res.status(400).json({ success: false, error: "tankId query required" });
   }
