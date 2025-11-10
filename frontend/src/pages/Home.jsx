@@ -1,7 +1,7 @@
 import HeroSection from "./HeroSection";
 import FeaturesSection from "./FeaturesSection";
 import TeamSection from "./TeamSection";
-
+import SubscriptionPage from "./SubscriptionPage";
 
 const Home = () => {
   return (
@@ -24,6 +24,7 @@ const Home = () => {
       <HeroSection />
       <FeaturesSection />
       <TeamSection />
+      <SubscriptionPage />
     </div>
   );
 };

@@ -14,6 +14,7 @@ import DemoSection from "./pages/DemoSection";
 import TeamSection from "./pages/TeamSection";
 import GallerySection from "./pages/GallerySection";
 import ContactSection from "./pages/ContactSection";
+import SubscriptionPage from "./pages/SubscriptionPage";
 
 const PageWrapper = ({ children }) => {
   return (
@@ -56,6 +57,14 @@ const AnimatedRoutes = () => {
           element={
             <PageWrapper>
               <FeaturesSection />
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/subscription"
+          element={
+            <PageWrapper>
+              <SubscriptionPage />
             </PageWrapper>
           }
         />
