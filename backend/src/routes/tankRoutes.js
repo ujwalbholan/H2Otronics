@@ -7,4 +7,4 @@ tankRouter.post("/update", updateTankData);
 tankRouter.get("/tank-data", getTankData);      
 tankRouter.post("/control", controlPump);       
 
-export default tankRouter;
+export default rtankRouter;
