@@ -38,7 +38,7 @@ export async function loginController(req, res) {
         .json({ message: "Email and password are required" });
 
     // Firebase REST API endpoint for sign-in
-    const firebaseLoginURL = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAS3ewaT8u-n-f5pccaxOh847tAngOxFHc`;
+    const firebaseLoginURL = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=FIREBASE_API_KEY`;
 
     const response = await fetch(firebaseLoginURL, {
       method: "POST",
