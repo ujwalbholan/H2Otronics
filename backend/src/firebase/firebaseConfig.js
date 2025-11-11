@@ -4,7 +4,7 @@ import express from "express";
 import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
-const serviceAccount = require("/Users/user/coding/h20/backend/h2otronics-firebase-adminsdk-fbsvc-4d58d3a7c4.json");
+const serviceAccount = require(process.env.serviceAccountUrl);
 
 dotenv.config();
 
