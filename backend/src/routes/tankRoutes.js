@@ -1,10 +1,10 @@
 import express from "express";
 import { updateTankData, getTankData, controlPump } from "../controllers/tankController.js";
 
-const router = express.Router();
+const tankRouter = express.Router();
 
-router.post("/update", updateTankData);     
-router.get("/tank-data", getTankData);      
-router.post("/control", controlPump);       
+tankRouter.post("/update", updateTankData);     
+tankRouter.get("/tank-data", getTankData);      
+tankRouter.post("/control", controlPump);       
 
-export default router;
+export default tankRouter;
