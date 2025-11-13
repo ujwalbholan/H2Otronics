@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import ToastContainer from "../components/Toast";
 
 function Signin() {
   const [formData, setFormData] = useState({
@@ -42,12 +41,8 @@ function Signin() {
 
       // Save token in cookie
       Cookies.set("authToken", token, { expires: 7 }); // expires in 7 days
-
-      // <ToastContainer/>
-      // window.location.href = "/dashboard"; // Redirect after login
       navigate("/dashboard", { replace: true });
     } catch (error) {
-      console.error("Login Error:", error.response?.data || error.message);
       setErrorMsg(error.response?.data?.message || "Login failed!");
     } finally {
       setLoading(false);
@@ -152,8 +147,9 @@ function Signin() {
       </div>
 
       {/* Custom animation for the floating blobs */}
-      <style>{`
-    @keyframes blob {
+      <style>
+        {`
+      @keyframes blob {
       0% {
         transform: translate(0px, 0px) scale(1);
       }
@@ -176,7 +172,8 @@ function Signin() {
     .animation-delay-4000 {
       animation-delay: 4s;
     }
-  `}</style>
+  `}
+      </style>
     </div>
   );
 }

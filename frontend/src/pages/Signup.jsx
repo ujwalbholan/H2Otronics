@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 function Signin() {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ function Signin() {
 
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -22,10 +24,9 @@ function Signin() {
     e.preventDefault();
     setErrorMsg("");
     setLoading(true);
-
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/signup",
+        "http://localhost:3000/api/auth/signUp",
         formData,
         {
           headers: {
@@ -34,15 +35,12 @@ function Signin() {
         }
       );
 
-      const { token } = response.data.idToken;
+      const token = response.data.idToken;
 
-      // ✅ Save token in cookie
+      // Save token in cookie
       Cookies.set("authToken", token, { expires: 7 }); // expires in 7 days
-
-      alert("Login successful!");
-      window.location.href = "/dashboard"; // Redirect after login
+      navigate("/dashboard", { replace: true });
     } catch (error) {
-      console.error("Login Error:", error.response?.data || error.message);
       setErrorMsg(error.response?.data?.message || "Register failed!");
     } finally {
       setLoading(false);
