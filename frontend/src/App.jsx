@@ -12,9 +12,16 @@ import ContactSection from "./pages/ContactSection";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Alerts from "./pages/Dashboard/Alerts";
+import Analytics from "./pages/Dashboard/Analytics";
+import Reports from "./pages/Dashboard/Reports";
+import Settings from "./pages/Dashboard/Settings";
+
+import { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
 // const PageWrapper = ({ children }) => {
 //   return (
@@ -30,7 +37,7 @@ import PublicRoute from "./components/PublicRoute";
 //   );
 // };
 
-const AnimatedRoutes = () => {
+const Public = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes>
@@ -115,6 +122,15 @@ const AnimatedRoutes = () => {
             </PublicRoute>
           }
         />
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
+const Protected = () => {
+  return (
+    <AnimatePresence mode="wait">
+      <Routes>
         //protected route
         <Route
           index
@@ -125,20 +141,71 @@ const AnimatedRoutes = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          index
+          path="/alerts"
+          element={
+            <ProtectedRoute>
+              <Alerts />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          index
+          path="/analytics"
+          element={
+            <ProtectedRoute>
+              <Analytics />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          index
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              <Reports />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          index
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </AnimatePresence>
   );
 };
 
 const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = Cookies.get("authToken");
+
+    if (token) setIsAuthenticated(true);
+  }, []);
   return (
     <div className="flex flex-col min-h-screen">
       <Router>
-        <Header />
-        <main className="flex-grow">
-          <AnimatedRoutes />
-        </main>
-        <Footer />
+        {isAuthenticated ? (
+          <main className="flex-grow">
+            <Protected />
+          </main>
+        ) : (
+          <>
+            <Header />
+            <main className="flex-grow">
+              <Public />
+            </main>
+            <Footer />
+          </>
+        )}
       </Router>
     </div>
   );
