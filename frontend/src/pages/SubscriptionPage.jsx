@@ -4,7 +4,7 @@ import Container from "../components/Container";
 const plans = [
   {
     name: "Basic",
-    price: "$9/mo",
+    price: "1000Rs/mo",
     features: [
       "Monitor 1 Water Tank",
       "Real-Time Level Updates",
@@ -14,7 +14,7 @@ const plans = [
   },
   {
     name: "Pro",
-    price: "$19/mo",
+    price: "2000Rs/mo",
     features: [
       "Monitor up to 3 Tanks",
       "Real-Time Control Access",
@@ -26,12 +26,11 @@ const plans = [
   },
   {
     name: "Premium",
-    price: "$29/mo",
+    price: "4000Rs/mo",
     features: [
       "Unlimited Tanks",
       "Full Automation Control",
       "Priority Support",
-      "AI-based Water Usage Insights",
     ],
     color: "from-cyan-400 to-blue-600",
   },

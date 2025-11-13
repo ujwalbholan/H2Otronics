@@ -1,53 +1,97 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-import { checkForAlerts } from "./alertController.js";
-import { queueCommand } from "./controlController.js";
+// src/controllers/tankController.js
+import { db } from "../firebase/firebaseConfig.js";
+import { v4 as uuidv4 } from "uuid";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Create or update a tank
+export const createOrUpdateTank = async (req, res) => {
+  try {
+    const userId = req.user.user_id;
+    const { tankName, tankType, capacity } = req.body;
 
-const dataFile = path.join(__dirname, "../data/tanks.json");
-const settingsFile = path.join(process.cwd(), "src", "data", "settings.json");
+    const tankId = uuidv4();
 
-export const updateTankData = (req, res) => {
-  const { tankId, level, pumpStatus } = req.body;
+    const tankRef = db
+      .collection("users")
+      .doc(userId)
+      .collection("tanks")
+      .doc(tankId);
 
-  console.log("📩 Incoming Tank Update:", tankId, level, pumpStatus);
+    const tankData = {
+      tankName,
+      tankId,
+      tankType,
+      capacity,
+      level: 0,
+      pumpStatus: "OFF",
+      temperature: 0,
+      updated: new Date().toISOString(),
+    };
 
-  let tanks = JSON.parse(fs.readFileSync(dataFile, "utf-8"));
-  tanks[tankId] = { level, pumpStatus, updated: new Date().toLocaleTimeString() };
+    await tankRef.set(tankData);
 
-  fs.writeFileSync(dataFile, JSON.stringify(tanks, null, 2));
-
-  checkForAlerts(tankId, level);
-
-  const settings = JSON.parse(fs.readFileSync(settingsFile, "utf-8"));
-  console.log("⚙️ AutoPump Mode:", settings.autoPump, "| Low:", settings.lowThreshold, "| High:", settings.highThreshold);
-
-  if (settings.autoPump === true) {
-    if (level < settings.lowThreshold) {
-      console.log(`🔽 Level ${level}% < ${settings.lowThreshold} → Queuing command ON`);
-      queueCommand(tankId, "ON");
-    } else if (level > settings.highThreshold) {
-      console.log(`🔼 Level ${level}% > ${settings.highThreshold} → Queuing command OFF`);
-      queueCommand(tankId, "OFF");
-    } else {
-      console.log("✅ Level Normal Range | No Auto Command");
-    }
+    res.json({ success: true, data: tankData });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
+};
+// Update tank data (from IoT device)
+export const updateTankDataById = async (req, res) => {
+  try {
 
-  res.json({ success: true, updated: tanks[tankId] });
+    const userId = req.user.user_id;
+    const { tankId, level, pumpStatus, temperature } = req.body;
+
+    if (!userId || !tankId)
+      return res.status(400).json({ message: "tankId required" });
+
+    const tankRef = db
+      .collection("users")
+      .doc(userId)
+      .collection("tanks")
+      .doc(tankId);
+
+    const updatedTank = {
+      level,
+      pumpStatus,
+      temperature,
+      updated: new Date().toISOString(),
+    };
+
+    await tankRef.set(updatedTank, { merge: true });
+
+    // Auto pump logic
+    const tankSnap = await tankRef.get();
+    const tank = tankSnap.data();
+    if (tank.autoPump) {
+      if (level < tank.lowThreshold) {
+        console.log(`Turning pump ON for tank ${tankId}`);
+      } else if (level > tank.highThreshold) {
+        console.log(`🔼urning pump OFF for tank ${tankId}`);
+      }
+    }
+
+    res.json({ success: true, data: updatedTank });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
+// Get all tanks for a user
+export const getUserTanks = async (req, res) => {
+  try {
+    const { userId } = req.query;
+    if (!userId) return res.status(400).json({ message: "userId required" });
 
-export const getTankData = (req, res) => {
-  const tanks = JSON.parse(fs.readFileSync(dataFile, "utf-8"));
-  res.json(tanks);
-};
+    const snapshot = await db
+      .collection("users")
+      .doc(userId)
+      .collection("tanks")
+      .get();
+    const tanks = {};
+    snapshot.forEach((doc) => (tanks[doc.id] = doc.data()));
 
-export const controlPump = (req, res) => {
-  const { tankId, command } = req.body;
-  console.log(`Pump Control Request → Tank: ${tankId}, Action: ${command}`);
-  res.json({ success: true });
+    res.json({ success: true, tanks });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };

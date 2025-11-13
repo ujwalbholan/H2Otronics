@@ -3,12 +3,15 @@ import {
   registerController,
   loginController,
   forgetPassword,
+  logout,
 } from "../controllers/authController.js";
+import { authenticate } from "../middleware/authenticate.js";
 
-const aurhRoute = express.Router();
+const authRoute = express.Router();
 
-aurhRoute.post("/signUp", registerController);
-aurhRoute.post("/signIn", loginController);
-aurhRoute.post("/forgetPassword", forgetPassword);
+authRoute.post("/signUp", registerController);
+authRoute.post("/signIn", loginController);
+authRoute.post("/forgetPassword", forgetPassword);
+authRoute.post("/logout", authenticate, logout);
 
-export default aurhRoute;
+export default authRoute;

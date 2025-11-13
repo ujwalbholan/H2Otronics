@@ -16,6 +16,8 @@ const Header = () => {
     { name: "Team", id: "team", route: "/team" },
     { name: "Gallery", id: "gallery", route: "/gallery" },
     { name: "Contact", id: "contact", route: "/contact" },
+    { name: "Signin", id: "signin", route: "/signin" },
+    { name: "Signup", id: "signup", route: "/signup" },
   ];
 
   return (

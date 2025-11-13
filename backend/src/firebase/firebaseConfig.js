@@ -4,7 +4,7 @@ import express from "express";
 import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
-const serviceAccount = require(process.env.serviceAccountUrl);
+const serviceAccount = require("/Users/user/coding/h20/backend/h2otronics-firebase-adminsdk-fbsvc-4d58d3a7c4.json");
 
 dotenv.config();
 
@@ -16,5 +16,6 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
+export const db = admin.firestore();
 export const auth = admin.auth();
 export default admin;

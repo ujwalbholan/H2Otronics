@@ -1,6 +1,8 @@
 import { auth } from "../firebase/firebaseConfig.js";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
+import admin from "firebase-admin";
+
 
 dotenv.config();
 
@@ -27,7 +29,6 @@ export async function registerController(req, res) {
   }
 }
 
-
 export async function loginController(req, res) {
   try {
     const { email, password } = req.body;
@@ -38,7 +39,7 @@ export async function loginController(req, res) {
         .json({ message: "Email and password are required" });
 
     // Firebase REST API endpoint for sign-in
-    const firebaseLoginURL = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=FIREBASE_API_KEY`;
+    const firebaseLoginURL = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAS3ewaT8u-n-f5pccaxOh847tAngOxFHc`;
 
     const response = await fetch(firebaseLoginURL, {
       method: "POST",
@@ -80,5 +81,27 @@ export async function forgetPassword(req, res) {
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+}
+
+
+export async function logout(req, res) {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    // Decode the token to get user UID
+    const decoded = await admin.auth().verifyIdToken(token);
+    const uid = decoded.uid;
+
+    // Revoke all refresh tokens for this user
+    await admin.auth().revokeRefreshTokens(uid);
+
+    return res.status(200).json({ message: "Logout successful. Tokens revoked." });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json({ message: "Logout failed", error: error.message });
   }
 }
