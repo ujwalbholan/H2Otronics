@@ -17,9 +17,9 @@ import PublicRoute from "./components/PublicRoute";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Alerts from "./pages/Dashboard/Alerts";
 
-import Analytics from "./pages/Dashboard/Analytics.jsx";
-import Reports from "./pages/Dashboard/Reports.jsx";
-import Settings from "./pages/Dashboard/Settings.jsx";
+import Analytics from "./pages/Dashboard/Analytics";
+import Reports from "./pages/Dashboard/Reports";
+import Settings from "./pages/Dashboard/Settings";
 
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
