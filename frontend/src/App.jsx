@@ -133,7 +133,6 @@ const Protected = () => {
       <Routes>
         //protected route
         <Route
-          index
           path="/dashboard"
           element={
             <ProtectedRoute>
@@ -142,7 +141,6 @@ const Protected = () => {
           }
         />
         <Route
-          index
           path="/alerts"
           element={
             <ProtectedRoute>
@@ -151,7 +149,6 @@ const Protected = () => {
           }
         />
         <Route
-          index
           path="/analytics"
           element={
             <ProtectedRoute>
@@ -160,7 +157,6 @@ const Protected = () => {
           }
         />
         <Route
-          index
           path="/reports"
           element={
             <ProtectedRoute>
@@ -169,7 +165,6 @@ const Protected = () => {
           }
         />
         <Route
-          index
           path="/settings"
           element={
             <ProtectedRoute>
