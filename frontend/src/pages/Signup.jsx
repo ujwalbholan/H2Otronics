@@ -26,7 +26,7 @@ function Signin() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/signUp",
+        "https://h2otronics.onrender.com/api/auth/signUp",
         formData,
         {
           headers: {
