@@ -38,161 +38,6 @@ import Cookies from "js-cookie";
 //   );
 // };
 
-const Public = () => {
-  return (
-    <AnimatePresence mode="wait">
-      <Routes>
-        //public route
-        <Route
-          index
-          element={
-            <PublicRoute>
-              <Home />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/about"
-          element={
-            <PublicRoute>
-              <About />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/features"
-          element={
-            <PublicRoute>
-              <FeaturesSection />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/subscription"
-          element={
-            <PublicRoute>
-              <SubscriptionPage />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/demo"
-          element={
-            <PublicRoute>
-              <DemoSection />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/team"
-          element={
-            <PublicRoute>
-              <TeamSection />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/gallery"
-          element={
-            <PublicRoute>
-              <GallerySection />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/contact"
-          element={
-            <PublicRoute>
-              <ContactSection />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/signin"
-          element={
-            <PublicRoute>
-              <Signin />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <PublicRoute>
-              <Signup />
-            </PublicRoute>
-          }
-        />
-      </Routes>
-    </AnimatePresence>
-  );
-};
-
-const Protected = () => {
-  return (
-    <Routes>
-      {/* Protected Dashboard */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <AnimatePresence mode="wait">
-              <Dashboard />
-            </AnimatePresence>
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Alerts */}
-      <Route
-        path="/alerts"
-        element={
-          <ProtectedRoute>
-            <AnimatePresence mode="wait">
-              <Alerts />
-            </AnimatePresence>
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Analytics */}
-      {/* <Route
-        path="/analytics"
-        element={
-          <ProtectedRoute>
-            <AnimatePresence mode="wait">
-              <Analytics />
-            </AnimatePresence>
-          </ProtectedRoute>
-        }
-      /> */}
-
-      {/* Reports */}
-      {/* <Route
-        path="/reports"
-        element={
-          <ProtectedRoute>
-            <AnimatePresence mode="wait">
-              <Reports />
-            </AnimatePresence>
-          </ProtectedRoute>
-        }
-      /> */}
-
-      {/* Settings */}
-      {/* <Route
-        path="/settings"
-        element={
-          <ProtectedRoute>
-            <AnimatePresence mode="wait">
-              <Settings />
-            </AnimatePresence>
-          </ProtectedRoute>
-        }
-      /> */}
-    </Routes>
-  );
-};
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -204,19 +49,122 @@ const App = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Router>
-        {isAuthenticated ? (
-          <main className="grow">
-            <Protected />
-          </main>
-        ) : (
-          <>
-            <Header />
-            <main className="grow">
-              <Public />
-            </main>
-            <Footer />
-          </>
-        )}
+        {!isAuthenticated && <Header />}
+        <main className="grow">
+          <AnimatePresence mode="wait">
+            <Routes>
+              {/* public route */}
+              <Route
+                path="/"
+                element={
+                  <PublicRoute>
+                    <Home />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <PublicRoute>
+                    <About />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/features"
+                element={
+                  <PublicRoute>
+                    <FeaturesSection />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/subscription"
+                element={
+                  <PublicRoute>
+                    <SubscriptionPage />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/demo"
+                element={
+                  <PublicRoute>
+                    <DemoSection />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/team"
+                element={
+                  <PublicRoute>
+                    <TeamSection />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/gallery"
+                element={
+                  <PublicRoute>
+                    <GallerySection />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/contact"
+                element={
+                  <PublicRoute>
+                    <ContactSection />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/signin"
+                element={
+                  <PublicRoute>
+                    <Signin />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/signup"
+                element={
+                  <PublicRoute>
+                    <Signup />
+                  </PublicRoute>
+                }
+              />
+
+              {/* protected route */}
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/alerts"
+                element={
+                  <ProtectedRoute>
+                    <Alerts />
+                  </ProtectedRoute>
+                }
+              />
+              {/* Future protected routes can stay commented until needed */}
+              {/* <Route
+                path="/analytics"
+                element={
+                  <ProtectedRoute>
+                    <Analytics />
+                  </ProtectedRoute>
+                }
+              /> */}
+            </Routes>
+          </AnimatePresence>
+        </main>
+        {!isAuthenticated && <Footer />}
       </Router>
     </div>
   );
