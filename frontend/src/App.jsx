@@ -207,13 +207,13 @@ const App = () => {
     <div className="flex flex-col min-h-screen">
       <Router>
         {isAuthenticated ? (
-          <main className="flex-grow">
+          <main className="grow">
             <Protected />
           </main>
         ) : (
           <>
             <Header />
-            <main className="flex-grow">
+            <main className="grow">
               <Public />
             </main>
             <Footer />
