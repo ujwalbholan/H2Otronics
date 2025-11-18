@@ -140,9 +140,9 @@ const App = () => {
               >
                 <Route index element={<Dashboard />} />
                 <Route path="alerts" element={<Alerts />} />
-                <Route path="analytics" element={<Analytics />} />
+                {/* <Route path="analytics" element={<Analytics />} />
                 <Route path="reports" element={<Reports />} />
-                <Route path="settings" element={<Settings />} />
+                <Route path="settings" element={<Settings />} /> */}
               </Route>
             </Routes>
           </Suspense>
