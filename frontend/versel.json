@@ -1,8 +1,10 @@
 {
   "rewrites": [
     {
-      "source": "/(?!static|favicon.ico|_next|api|.*\\.[0-9a-zA-Z]+$).*$",
+      "source": "/(?!.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|webp|woff2|woff|ttf|eot)).*",
       "destination": "/index.html"
     }
-  ]
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
 }
