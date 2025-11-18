@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "builds": [
     {
       "src": "package.json",
@@ -19,3 +19,4 @@
   "cleanUrls": true,
   "trailingSlash": false
 }
+
