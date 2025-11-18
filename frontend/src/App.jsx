@@ -1,42 +1,25 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AnimatePresence } from "motion/react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import FeaturesSection from "./pages/FeaturesSection";
-import DemoSection from "./pages/DemoSection";
-import TeamSection from "./pages/TeamSection";
-import GallerySection from "./pages/GallerySection";
-import ContactSection from "./pages/ContactSection";
-import SubscriptionPage from "./pages/SubscriptionPage";
-import Signin from "./pages/Signin";
-import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import Alerts from "./pages/Dashboard/Alerts";
 
-// import Analytics from "./pages/Dashboard/Analytics";
-// import Reports from "./pages/Dashboard/Reports";
-// import Settings from "./pages/Dashboard/Settings";
-
-import { useState, useEffect } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
-// const PageWrapper = ({ children }) => {
-//   return (
-//     <motion.div
-//       initial={{ opacity: 0, y: 20 }}
-//       animate={{ opacity: 1, y: 0 }}
-//       exit={{ opacity: 0, y: -20 }}
-//       transition={{ duration: 0.6, ease: "easeOut" }}
-//       className="min-h-screen"
-//     >
-//       {children}
-//     </motion.div>
-//   );
-// };
+const Home = lazy(() => import("./pages/Home"));
+const About = lazy(() => import("./pages/About"));
+const FeaturesSection = lazy(() => import("./pages/FeaturesSection"));
+const DemoSection = lazy(() => import("./pages/DemoSection"));
+const TeamSection = lazy(() => import("./pages/TeamSection"));
+const GallerySection = lazy(() => import("./pages/GallerySection"));
+const ContactSection = lazy(() => import("./pages/ContactSection"));
+const SubscriptionPage = lazy(() => import("./pages/SubscriptionPage"));
+const Signin = lazy(() => import("./pages/Signin"));
+const Signup = lazy(() => import("./pages/Signup"));
+const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
+const Alerts = lazy(() => import("./pages/Dashboard/Alerts"));
+// const Loading = lazy(() => import("./components/Loading"));
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -51,109 +34,115 @@ const App = () => {
       <Router>
         {!isAuthenticated && <Header />}
         <main className="grow">
-          <AnimatePresence mode="wait">
-            <Routes>
-              {/* public route */}
-              <Route
-                path="/"
-                element={
-                  <PublicRoute>
-                    <Home />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/about"
-                element={
-                  <PublicRoute>
-                    <About />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/features"
-                element={
-                  <PublicRoute>
-                    <FeaturesSection />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/subscription"
-                element={
-                  <PublicRoute>
-                    <SubscriptionPage />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/demo"
-                element={
-                  <PublicRoute>
-                    <DemoSection />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/team"
-                element={
-                  <PublicRoute>
-                    <TeamSection />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/gallery"
-                element={
-                  <PublicRoute>
-                    <GallerySection />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/contact"
-                element={
-                  <PublicRoute>
-                    <ContactSection />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/signin"
-                element={
-                  <PublicRoute>
-                    <Signin />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/signup"
-                element={
-                  <PublicRoute>
-                    <Signup />
-                  </PublicRoute>
-                }
-              />
+          {/* <Suspense
+            fallback={
+              <div className="flex items-center justify-center w-full py-16 text-sm text-gray-500">
+                <Loading />
+              </div>
+            }
+          > */}
+          <Routes>
+            {/* public route */}
+            <Route
+              path="/"
+              element={
+                <PublicRoute>
+                  <Home />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <PublicRoute>
+                  <About />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/features"
+              element={
+                <PublicRoute>
+                  <FeaturesSection />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/subscription"
+              element={
+                <PublicRoute>
+                  <SubscriptionPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/demo"
+              element={
+                <PublicRoute>
+                  <DemoSection />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/team"
+              element={
+                <PublicRoute>
+                  <TeamSection />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/gallery"
+              element={
+                <PublicRoute>
+                  <GallerySection />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/contact"
+              element={
+                <PublicRoute>
+                  <ContactSection />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/signin"
+              element={
+                <PublicRoute>
+                  <Signin />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <PublicRoute>
+                  <Signup />
+                </PublicRoute>
+              }
+            />
 
-              {/* protected route */}
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/alerts"
-                element={
-                  <ProtectedRoute>
-                    <Alerts />
-                  </ProtectedRoute>
-                }
-              />
-              {/* Future protected routes can stay commented until needed */}
-              {/* <Route
+            {/* protected route */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/alerts"
+              element={
+                <ProtectedRoute>
+                  <Alerts />
+                </ProtectedRoute>
+              }
+            />
+            {/* Future protected routes can stay commented until needed */}
+            {/* <Route
                 path="/analytics"
                 element={
                   <ProtectedRoute>
@@ -161,8 +150,8 @@ const App = () => {
                   </ProtectedRoute>
                 }
               /> */}
-            </Routes>
-          </AnimatePresence>
+          </Routes>
+          {/* </Suspense> */}
         </main>
         {!isAuthenticated && <Footer />}
       </Router>

@@ -1,7 +1,13 @@
+import { Suspense, lazy } from "react";
 import HeroSection from "./HeroSection";
-import FeaturesSection from "./FeaturesSection";
-import TeamSection from "./TeamSection";
-import SubscriptionPage from "./SubscriptionPage";
+
+const FeaturesSection = lazy(() => import("./FeaturesSection"));
+const TeamSection = lazy(() => import("./TeamSection"));
+const SubscriptionPage = lazy(() => import("./SubscriptionPage"));
+
+const SectionFallback = () => (
+  <div className="w-full h-64 my-12 rounded-3xl bg-slate-100/80 animate-pulse" />
+);
 
 const Home = () => {
   return (
@@ -22,9 +28,15 @@ const Home = () => {
         }}
       />
       <HeroSection />
-      <FeaturesSection />
-      <TeamSection />
-      <SubscriptionPage />
+      <Suspense fallback={<SectionFallback />}>
+        <FeaturesSection />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <TeamSection />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <SubscriptionPage />
+      </Suspense>
     </div>
   );
 };
