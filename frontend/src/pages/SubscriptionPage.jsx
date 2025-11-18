@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion as Motion } from "motion/react";
 import Container from "../components/Container";
 
 const plans = [
@@ -41,7 +41,7 @@ const SubscriptionPage = () => {
     <Container>
       <section className="min-h-screen flex flex-col items-center justify-center  py-16 px-4 md:px-10">
         {/* Header */}
-        <motion.div
+        <Motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
@@ -54,12 +54,12 @@ const SubscriptionPage = () => {
             Get started with the perfect plan for your smart water monitoring
             system.
           </p>
-        </motion.div>
+        </Motion.div>
 
         {/* Plans */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
           {plans.map((plan, i) => (
-            <motion.div
+            <Motion.div
               key={i}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -70,8 +70,8 @@ const SubscriptionPage = () => {
               }`}
             >
               {/* Animated Gradient Border */}
-              <motion.div
-                className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${plan.color} opacity-20 blur-xl`}
+              <Motion.div
+                className={`absolute inset-0 rounded-2xl bg-linear-to-r ${plan.color} opacity-20 blur-xl`}
                 animate={{
                   opacity: [0.15, 0.25, 0.15],
                 }}
@@ -80,7 +80,7 @@ const SubscriptionPage = () => {
                   duration: 3,
                   ease: "easeInOut",
                 }}
-              ></motion.div>
+              ></Motion.div>
 
               <div className="relative z-10">
                 {plan.popular && (
@@ -104,15 +104,15 @@ const SubscriptionPage = () => {
                   ))}
                 </ul>
 
-                <motion.button
+                <Motion.button
                   whileTap={{ scale: 0.95 }}
                   whileHover={{ backgroundColor: "#2563eb" }}
                   className="w-full py-3 font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
                 >
                   Subscribe
-                </motion.button>
+                </Motion.button>
               </div>
-            </motion.div>
+            </Motion.div>
           ))}
         </div>
       </section>
