@@ -44,7 +44,7 @@ const Public = () => {
       <Routes>
         //public route
         <Route
-          path="/"
+          index
           element={
             <PublicRoute>
               <Home />
