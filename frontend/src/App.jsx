@@ -129,62 +129,77 @@ const Public = () => {
 };
 
 const Protected = () => {
+  console.log("i am in protected route");
+
   return (
-    <AnimatePresence mode="wait">
-      <Routes>
-        //protected route
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
+    <Routes>
+      {/* Protected Dashboard */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <AnimatePresence mode="wait">
               <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/alerts"
-          element={
-            <ProtectedRoute>
+            </AnimatePresence>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Alerts */}
+      <Route
+        path="/alerts"
+        element={
+          <ProtectedRoute>
+            <AnimatePresence mode="wait">
               <Alerts />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/analytics"
-          element={
-            <ProtectedRoute>
+            </AnimatePresence>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Analytics */}
+      {/* <Route
+        path="/analytics"
+        element={
+          <ProtectedRoute>
+            <AnimatePresence mode="wait">
               <Analytics />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/reports"
-          element={
-            <ProtectedRoute>
+            </AnimatePresence>
+          </ProtectedRoute>
+        }
+      /> */}
+
+      {/* Reports */}
+      {/* <Route
+        path="/reports"
+        element={
+          <ProtectedRoute>
+            <AnimatePresence mode="wait">
               <Reports />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
+            </AnimatePresence>
+          </ProtectedRoute>
+        }
+      /> */}
+
+      {/* Settings */}
+      {/* <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <AnimatePresence mode="wait">
               <Settings />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </AnimatePresence>
+            </AnimatePresence>
+          </ProtectedRoute>
+        }
+      /> */}
+    </Routes>
   );
 };
-
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get("authToken");
-
-    console.log('token', token );
 
     if (token) setIsAuthenticated(true);
   }, []);
