@@ -129,8 +129,6 @@ const Public = () => {
 };
 
 const Protected = () => {
-  console.log("i am in protected route");
-
   return (
     <Routes>
       {/* Protected Dashboard */}
