@@ -90,12 +90,12 @@ const LeftSideBar = ({
     <>
       {/* Desktop sidebar */}
       <aside
-        className={`hidden md:flex md:flex-col border-r border-slate-200 bg-white/90 backdrop-blur transition-all duration-300 ${
+        className={`hidden md:flex md:flex-col md:fixed md:left-0 md:top-0 md:h-screen border-r border-slate-200 bg-white/90 backdrop-blur transition-all duration-300 z-30 ${
           isCompact ? "w-20" : "w-64"
-        } min-h-screen`}
+        }`}
       >
-        <div className={`px-4 py-4 ${isCompact ? "text-center" : "px-6"}`}>
-          <div className="flex items-center justify-between">
+        <div className={`px-4 py-4 ${isCompact ? "text-center" : "px-6"} flex-1 flex flex-col`}>
+          <div className="flex items-center justify-between shrink-0">
             <p
               className={`font-semibold uppercase text-slate-900 ${
                 isCompact ? "text-lg" : "text-2xl tracking-wide"
@@ -137,19 +137,19 @@ const LeftSideBar = ({
               );
             })}
           </nav>
-        </div>
-        <div className={`mt-auto pb-6 ${isCompact ? "px-4" : "px-6"}`}>
-          <button
-            type="button"
-            onClick={handleLogout}
-            disabled={isLoggingOut}
-            className={`inline-flex items-center justify-center gap-2 rounded-xl font-semibold text-white bg-linear-to-r from-slate-900 via-blue-900 to-blue-700 shadow-lg shadow-blue-900/20 hover:shadow-blue-900/40 transition disabled:opacity-60 ${
-              isCompact ? "w-12 h-12" : "w-full px-4 py-3"
-            }`}
-          >
-            <LogOut size={18} />
-            {!isCompact && (isLoggingOut ? "Signing out..." : "Logout")}
-          </button>
+          <div className={`mt-auto pb-6 ${isCompact ? "px-4" : "px-6"} shrink-0`}>
+            <button
+              type="button"
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+              className={`inline-flex items-center justify-center gap-2 rounded-xl font-semibold text-white bg-linear-to-r from-slate-900 via-blue-900 to-blue-700 shadow-lg shadow-blue-900/20 hover:shadow-blue-900/40 transition disabled:opacity-60 ${
+                isCompact ? "w-12 h-12" : "w-full px-4 py-3"
+              }`}
+            >
+              <LogOut size={18} />
+              {!isCompact && (isLoggingOut ? "Signing out..." : "Logout")}
+            </button>
+          </div>
         </div>
       </aside>
 

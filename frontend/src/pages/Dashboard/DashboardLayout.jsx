@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Menu } from "lucide-react";
 import LeftSideBar from "./LeftSideBar";
+import DashboardHeader from "../../components/DashboardHeader";
 
 const DashboardLayout = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -10,7 +11,7 @@ const DashboardLayout = () => {
   const closeMobileSidebar = () => setIsMobileSidebarOpen(false);
 
   return (
-    <div className="relative flex min-h-screen bg-slate-50">
+    <div className="relative flex h-screen bg-slate-50 overflow-hidden">
       {isMobileSidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-slate-950/30 md:hidden"
@@ -26,8 +27,9 @@ const DashboardLayout = () => {
         onMobileClose={closeMobileSidebar}
       />
 
-      <div className="flex flex-1 flex-col">
-        <div className="flex items-center justify-between px-4 py-4 md:hidden">
+      <div className={`flex flex-1 flex-col min-w-0 ${isCollapsed ? "md:ml-20" : "md:ml-64"}`}>
+        <div className="flex items-center justify-between px-4 py-4 md:hidden shrink-0">
+          {/* smaller device menu */}
           <button
             type="button"
             onClick={() => setIsMobileSidebarOpen(true)}
@@ -37,7 +39,10 @@ const DashboardLayout = () => {
             Menu
           </button>
         </div>
-        <div className="flex-1 px-4 pb-10 md:px-6 md:py-8">
+        <div className="shrink-0">
+          <DashboardHeader />
+        </div>
+        <div className="flex-1 overflow-y-auto px-4 pb-10 md:px-6 md:py-8">
           <Outlet />
         </div>
       </div>

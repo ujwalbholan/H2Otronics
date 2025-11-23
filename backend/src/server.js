@@ -21,12 +21,12 @@ app.use("/api/alerts", alertRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api", controlRoutes);
 
-
+//tank api
 app.use("/api/tanks", authenticate, tankRoute);
-//auth
+//auth api
 app.use("/api/auth", authRoute);
-//payment
-app.use("/api/payment",authenticate, paymentRoute);
+//payment api
+app.use("/api/payment", authenticate, paymentRoute);
 
 app.get("/", (req, res) => {
   res.json({ message: "Backend server is running!" });
