@@ -10,9 +10,9 @@ const serviceAccount = JSON.parse(process.env.FIREBASE_ADMIN_KEY);
 
 dotenv.config();
 
-// const app = express();
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),

@@ -7,7 +7,7 @@ import { handleControllerError } from "../utils/errorUtils.js";
 export const createTank = async (req, res) => {
   try {
     const userId = req.user?.user_id;
-    console.log("user id is :", userId);
+
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }

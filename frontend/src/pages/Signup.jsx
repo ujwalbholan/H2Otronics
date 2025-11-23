@@ -36,9 +36,12 @@ function Signin() {
       );
 
       const token = response.data.idToken;
+      const refreshToken = response.data.refreshToken;
 
       // Save token in cookie
       Cookies.set("authToken", token, { expires: 7 }); // expires in 7 days
+      Cookies.set("refreshToken", refreshToken, { expires: 10 }); // expires in 10 days
+
       navigate("/dashboard", { replace: true });
     } catch (error) {
       setErrorMsg(error.response?.data?.message || "Register failed!");

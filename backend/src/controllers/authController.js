@@ -103,7 +103,8 @@ export async function loginController(req, res) {
     return res.status(200).json({
       message: "Login successful",
       email: data.email,
-      idToken: data.idToken, // Firebase ID token (can be used for auth)
+      idToken: data.idToken,
+      refreshToken: data.refreshToken, // Firebase ID token (can be used for auth)
     });
   } catch (error) {
     console.error(error);
