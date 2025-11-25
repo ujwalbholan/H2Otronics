@@ -3,9 +3,10 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Plus, Edit2, Trash2, Droplet, Zap } from "lucide-react";
 import TankForm from "../../components/TankForm";
+import { auth } from "../../firebase/Firebase";
 
-const API_BASE_URL = "https://h2otronics.onrender.com/api";
-// const API_BASE_URL = "http://localhost:3000/api";
+// const API_BASE_URL = "https://h2otronics.onrender.com/api";
+const API_BASE_URL = "http://localhost:3000/api";
 
 const Dashboard = () => {
   const [tanks, setTanks] = useState({});
@@ -14,10 +15,22 @@ const Dashboard = () => {
   const [editingTank, setEditingTank] = useState(null);
   const [error, setError] = useState("");
 
-  const getAuthHeaders = () => {
-    const token = Cookies.get("authToken");
+  const getAuthHeaders = async () => {
+    let idToken;
+    // Try to get token from Firebase auth if user is signed in
+    if (auth.currentUser) {
+      idToken = await auth.currentUser.getIdToken();
+    } else {
+      // Fallback to token from cookies (from backend authentication)
+      const tokenFromCookie = Cookies.get("authToken");
+      if (!tokenFromCookie) {
+        throw new Error("User is not authenticated");
+      }
+      idToken = tokenFromCookie;
+    }
+
     return {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${idToken}`,
       "Content-Type": "application/json",
     };
   };
@@ -27,7 +40,8 @@ const Dashboard = () => {
       setLoading(true);
       setError("");
       const response = await axios.get(`${API_BASE_URL}/tanks/getTanks`, {
-        headers: getAuthHeaders(),
+        method: "GET",
+        headers: await getAuthHeaders(),
       });
 
       if (response.data.success) {
@@ -62,7 +76,7 @@ const Dashboard = () => {
 
     try {
       await axios.delete(`${API_BASE_URL}/tanks/delete`, {
-        headers: getAuthHeaders(),
+        headers: await getAuthHeaders(),
         data: { tankId },
       });
       await fetchTanks();
@@ -78,6 +92,8 @@ const Dashboard = () => {
         tankName: formData.tankName,
         tankType: formData.tankType,
         capacity: formData.capacity,
+        level: formData.level,
+        pumpStatus: formData.pumpStatus,
       };
 
       // Include tankId if editing
@@ -86,7 +102,8 @@ const Dashboard = () => {
       }
 
       await axios.post(`${API_BASE_URL}/tanks/create`, payload, {
-        headers: getAuthHeaders(),
+        method: "POST",
+        headers: await getAuthHeaders(),
       });
 
       // If level or pumpStatus was provided, update them separately
@@ -104,7 +121,8 @@ const Dashboard = () => {
             pumpStatus: formData.pumpStatus,
           },
           {
-            headers: getAuthHeaders(),
+            method: "POST",
+            headers: await getAuthHeaders(),
           }
         );
       }
@@ -177,6 +195,7 @@ const Dashboard = () => {
                     >
                       <Edit2 size={18} />
                     </button>
+
                     <button
                       onClick={() => handleDeleteTank(tank.tankId)}
                       className="p-2 hover:bg-red-50 rounded-lg transition text-red-600"
@@ -252,7 +271,8 @@ const Dashboard = () => {
         {!loading && (
           <button
             onClick={handleAddTank}
-            className="fixed bottom-8 right-8 w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl hover:bg-blue-700 transition-all duration-300 hover:scale-110 flex items-center justify-center z-40"
+            className="fixed bottom-8 right-8 w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl
+             hover:bg-blue-700 transition-all duration-300 hover:scale-110 flex items-center justify-center z-40"
             aria-label="Add new tank"
           >
             <Plus size={24} />

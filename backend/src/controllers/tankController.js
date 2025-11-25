@@ -6,14 +6,22 @@ import { handleControllerError } from "../utils/errorUtils.js";
 // Create a tank (metadata only – telemetry is handled separately)
 export const createTank = async (req, res) => {
   try {
-    const userId = req.user?.user_id;
+
+    const userId = req.user.uid;
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const { tankName, tankType, capacity, level = 0, pumpStatus, temperature = 0 } =
-      req.body;
+    const {
+      tankName,
+      tankType,
+      capacity,
+      level = 0,
+      pumpStatus,
+      temperature = 0,
+    } = req.body;
+
 
     if (!tankName || !tankType || !capacity) {
       return res
@@ -31,6 +39,7 @@ export const createTank = async (req, res) => {
     const userRef = db.collection("users").doc(userId);
     const tanksRef = userRef.collection("tanks");
 
+
     // Optional: enforce unique tank names (case insensitive) per user
     const duplicate = await tanksRef
       .where("tankNameLower", "==", normalizedName.toLowerCase())
@@ -42,7 +51,6 @@ export const createTank = async (req, res) => {
         message: "Tank with this name already exists",
       });
     }
-
     const tankId = uuidv4();
     const now = new Date().toISOString();
 
@@ -70,7 +78,7 @@ export const createTank = async (req, res) => {
 // Update tank data (from IoT device)
 export const updateTankDataById = async (req, res) => {
   try {
-    const userId = req.user.user_id;
+    const userId = req.user.uid;
     const { tankId, level, pumpStatus, temperature } = req.body;
 
     if (!userId || !tankId)
@@ -111,15 +119,18 @@ export const updateTankDataById = async (req, res) => {
 // Get all tanks for a user
 export const getUserTanks = async (req, res) => {
   try {
-    const userId = req.user.user_id;
-    console.log("the user id is", userId);
+    const userId = req.user?.uid;
+
+    if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
     const snapshot = await db
       .collection("users")
       .doc(userId)
       .collection("tanks")
       .get();
+
     const tanks = {};
+
     snapshot.forEach((doc) => (tanks[doc.id] = doc.data()));
 
     res.json({ success: true, tanks });

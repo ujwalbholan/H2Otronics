@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 dotenv.config();
 
-app.use(cors());
+app.use(cors({ origin: true }));
 app.use(express.json());
 
 app.use("/api/alerts", alertRoutes);
