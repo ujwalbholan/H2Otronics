@@ -23,8 +23,8 @@ const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const Alerts = lazy(() => import("./pages/Dashboard/Alerts"));
 
 const Analytics = lazy(() => import("./pages/Dashboard/Analytics"));
-// const Reports = lazy(() => import("./pages/Dashboard/Reports"));
-// const Settings = lazy(() => import("./pages/Dashboard/Settings"));
+const Reports = lazy(() => import("./pages/Dashboard/Reports"));
+const Settings = lazy(() => import("./pages/Dashboard/Settings"));
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
