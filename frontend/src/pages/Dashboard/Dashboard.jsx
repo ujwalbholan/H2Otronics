@@ -5,8 +5,8 @@ import { Plus, Edit2, Trash2, Droplet, Zap } from "lucide-react";
 import TankForm from "../../components/TankForm";
 import { auth } from "../../firebase/Firebase";
 
-// const API_BASE_URL = "https://h2otronics.onrender.com/api";
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL = "https://h2otronics.onrender.com/api";
+// const API_BASE_URL = "http://localhost:3000/api";
 
 const Dashboard = () => {
   const [tanks, setTanks] = useState({});
