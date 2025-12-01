@@ -267,7 +267,7 @@ const Analytics = () => {
         ))}
       </div>
 
-      <h1 className="text-xl font-bold drop-shadow-md mb-6 relative z-10 md:text-4xl">
+      <h1 className="font-bold drop-shadow-md relative z-10 md:text-4xl">
         Analytics Overview
       </h1>
 

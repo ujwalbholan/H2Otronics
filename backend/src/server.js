@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import { authenticate } from "./middleware/authenticate.js";
 import paymentRoute from "./routes/paymentRouts.js";
 
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -17,7 +18,7 @@ dotenv.config();
 app.use(cors({ origin: true }));
 app.use(express.json());
 
-app.use("/api/alerts", alertRoutes);
+// app.use("/api/alerts", alertRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api", controlRoutes);
 

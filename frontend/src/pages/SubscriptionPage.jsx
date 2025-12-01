@@ -1,10 +1,14 @@
 import { motion as Motion } from "motion/react";
 import Container from "../components/Container";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const plans = [
   {
     name: "Basic",
     price: "1000Rs/mo",
+    priceId: "price_1Nxxx1BASIC",
     features: [
       "Monitor 1 Water Tank",
       "Real-Time Level Updates",
@@ -15,6 +19,7 @@ const plans = [
   {
     name: "Pro",
     price: "2000Rs/mo",
+    priceId: "price_1Nxxx2PRO",
     features: [
       "Monitor up to 3 Tanks",
       "Real-Time Control Access",
@@ -27,6 +32,7 @@ const plans = [
   {
     name: "Premium",
     price: "4000Rs/mo",
+    priceId: "price_1Nxxx3PREMIUM",
     features: [
       "Unlimited Tanks",
       "Full Automation Control",
@@ -37,10 +43,47 @@ const plans = [
 ];
 
 const SubscriptionPage = () => {
+
+  const navigate = useNavigate();
+
+  const getAuthHeaders = async () => {
+    let Token = Cookies.get("authToken");
+
+    if (!Token) {
+      navigate("/signin");
+    }
+
+    return {
+      Authorization: `Bearer ${Token}`,
+    };
+  };
+
+  const makePayment = async (plan) => {
+    try {
+      const body = {
+        planName: plan.name,
+        priceId: plan.priceId,
+        price: plan.price,
+      };
+      const headers = await getAuthHeaders();
+  
+      const response = await axios.post(
+        "http://localhost:3000/api/payment",
+        body, 
+        {
+          headers: headers, 
+        }
+      );
+      window.location.href = response.data.url;
+  
+    } catch (error) {
+      console.error("Payment error:", error);
+    }
+  };
+  
   return (
     <Container>
-      <section className="min-h-screen flex flex-col items-center justify-center  py-16 px-4 md:px-10">
-        {/* Header */}
+      <section className="min-h-screen flex flex-col items-center justify-center py-16 px-4 md:px-10">
         <Motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -56,7 +99,6 @@ const SubscriptionPage = () => {
           </p>
         </Motion.div>
 
-        {/* Plans */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
           {plans.map((plan, i) => (
             <Motion.div
@@ -69,7 +111,6 @@ const SubscriptionPage = () => {
                 plan.popular ? "ring-2 ring-blue-400" : ""
               }`}
             >
-              {/* Animated Gradient Border */}
               <Motion.div
                 className={`absolute inset-0 rounded-2xl bg-linear-to-r ${plan.color} opacity-20 blur-xl`}
                 animate={{
@@ -105,6 +146,7 @@ const SubscriptionPage = () => {
                 </ul>
 
                 <Motion.button
+                  onClick={() => makePayment(plan)} // Pass the respective plan to the function
                   whileTap={{ scale: 0.95 }}
                   whileHover={{ backgroundColor: "#2563eb" }}
                   className="w-full py-3 font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"

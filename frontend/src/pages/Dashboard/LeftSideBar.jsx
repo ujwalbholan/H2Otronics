@@ -11,6 +11,7 @@ import {
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
+  Wallet2Icon,
 } from "lucide-react";
 
 const menuItems = [
@@ -33,6 +34,11 @@ const menuItems = [
     label: "Reports",
     icon: FileText,
     to: "/dashboard/reports",
+  },
+  {
+    label: "Subscription",
+    icon: Wallet2Icon,
+    to: "/dashboard/subscription",
   },
   {
     label: "Settings",

@@ -15,16 +15,16 @@ const DemoSection = lazy(() => import("./pages/DemoSection"));
 const TeamSection = lazy(() => import("./pages/TeamSection"));
 const GallerySection = lazy(() => import("./pages/GallerySection"));
 const ContactSection = lazy(() => import("./pages/ContactSection"));
-const SubscriptionPage = lazy(() => import("./pages/SubscriptionPage"));
 const Signin = lazy(() => import("./pages/Signin"));
 const Signup = lazy(() => import("./pages/Signup"));
 const DashboardLayout = lazy(() => import("./pages/Dashboard/DashboardLayout"));
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const Alerts = lazy(() => import("./pages/Dashboard/Alerts"));
+const SubscriptionPage = lazy(() => import("./pages/SubscriptionPage"));
 
-const Analytics = lazy(() => import("./pages/Dashboard/Analytics"));
-const Reports = lazy(() => import("./pages/Dashboard/Reports"));
-const Settings = lazy(() => import("./pages/Dashboard/Settings"));
+// const Analytics = lazy(() => import("./pages/Dashboard/Analytics"));
+// const Reports = lazy(() => import("./pages/Dashboard/Reports"));
+// const Settings = lazy(() => import("./pages/Dashboard/Settings"));
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -143,6 +143,7 @@ const App = () => {
                 <Route path="analytics" element={<Analytics />} />
                 <Route path="reports" element={<Reports />} />
                 <Route path="settings" element={<Settings />} />
+                <Route path="subscription" element={<SubscriptionPage />} />
               </Route>
             </Routes>
           </Suspense>
