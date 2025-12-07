@@ -4,6 +4,7 @@ import HeroSection from "./HeroSection";
 const FeaturesSection = lazy(() => import("./FeaturesSection"));
 const TeamSection = lazy(() => import("./TeamSection"));
 const SubscriptionPage = lazy(() => import("./SubscriptionPage"));
+const ViedoSection = lazy(() => import("./H20Viedo"));
 
 const SectionFallback = () => (
   <div className="w-full h-64 my-12 rounded-3xl bg-slate-100/80 animate-pulse" />
@@ -30,6 +31,9 @@ const Home = () => {
       <HeroSection />
       <Suspense fallback={<SectionFallback />}>
         <FeaturesSection />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <ViedoSection />
       </Suspense>
       <Suspense fallback={<SectionFallback />}>
         <TeamSection />

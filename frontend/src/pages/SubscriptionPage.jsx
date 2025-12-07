@@ -148,7 +148,7 @@ const SubscriptionPage = () => {
                 </ul>
 
                 <Motion.button
-                  onClick={() => makePayment(plan)} 
+                  onClick={() => makePayment(plan)}
                   whileTap={{ scale: 0.95 }}
                   whileHover={{ backgroundColor: "#2563eb" }}
                   className="w-full py-3 font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
