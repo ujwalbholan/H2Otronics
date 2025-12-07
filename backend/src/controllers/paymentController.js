@@ -27,8 +27,8 @@ export async function makePayment(req, res) {
         },
       ],
       mode: "subscription",
-      success_url: "https://h2otronics.onrender.com/dashboard/subscription",
-      cancel_url: "https://h2otronics.onrender.com/dashboard/subscription",
+      success_url: "https://h2-otronics.vercel.app/dashboard/subscription",
+      cancel_url: "https://h2-otronics.vercel.app/dashboard/subscription",
     });
 
     return res.json({ url: session.url });
