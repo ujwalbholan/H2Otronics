@@ -3,6 +3,7 @@ import Container from "../components/Container";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import ToastContainer from "../components/Toast";
 
 const plans = [
   {
@@ -43,7 +44,6 @@ const plans = [
 ];
 
 const SubscriptionPage = () => {
-
   const navigate = useNavigate();
 
   const getAuthHeaders = async () => {
@@ -66,21 +66,21 @@ const SubscriptionPage = () => {
         price: plan.price,
       };
       const headers = await getAuthHeaders();
-  
+
+      //url change
       const response = await axios.post(
         "http://localhost:3000/api/payment",
-        body, 
+        body,
         {
-          headers: headers, 
+          headers: headers,
         }
       );
       window.location.href = response.data.url;
-  
     } catch (error) {
-      console.error("Payment error:", error);
+      throw new Error("Error from payment", error);
     }
   };
-  
+
   return (
     <Container>
       <section className="min-h-screen flex flex-col items-center justify-center py-16 px-4 md:px-10">
@@ -146,7 +146,7 @@ const SubscriptionPage = () => {
                 </ul>
 
                 <Motion.button
-                  onClick={() => makePayment(plan)} // Pass the respective plan to the function
+                  onClick={() => makePayment(plan)} 
                   whileTap={{ scale: 0.95 }}
                   whileHover={{ backgroundColor: "#2563eb" }}
                   className="w-full py-3 font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"

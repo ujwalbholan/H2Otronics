@@ -4,8 +4,6 @@ export async function authenticate(req, res, next) {
   try {
     const authHeader = req.headers.authorization;
 
-    console.log("auth header",authHeader);
-
     if (!authHeader) {
       return res.status(401).json({ message: "No token provided" });
     }
