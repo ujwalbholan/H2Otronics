@@ -68,8 +68,10 @@ const SubscriptionPage = () => {
       const headers = await getAuthHeaders();
 
       //url change
+      // local url
+      // "http://localhost:3000/api/payment",
       const response = await axios.post(
-        "http://localhost:3000/api/payment",
+        "https://h2otronics.onrender.com/api/payment",
         body,
         {
           headers: headers,
