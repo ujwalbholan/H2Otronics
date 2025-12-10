@@ -15,17 +15,17 @@ const Dashboard = () => {
   const [editingTank, setEditingTank] = useState(null);
   const [error, setError] = useState("");
 
+  // -------------------------------
+  // AUTH HEADERS
+  // -------------------------------
   const getAuthHeaders = async () => {
     let idToken;
-    // Try to get token from Firebase auth if user is signed in
+
     if (auth.currentUser) {
       idToken = await auth.currentUser.getIdToken();
     } else {
-      // Fallback to token from cookies (from backend authentication)
       const tokenFromCookie = Cookies.get("authToken");
-      if (!tokenFromCookie) {
-        throw new Error("User is not authenticated");
-      }
+      if (!tokenFromCookie) throw new Error("User is not authenticated");
       idToken = tokenFromCookie;
     }
 
@@ -35,12 +35,15 @@ const Dashboard = () => {
     };
   };
 
+  // -------------------------------
+  // FETCH TANKS
+  // -------------------------------
   const fetchTanks = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
+
       const response = await axios.get(`${API_BASE_URL}/tanks/getTanks`, {
-        method: "GET",
         headers: await getAuthHeaders(),
       });
 
@@ -59,6 +62,9 @@ const Dashboard = () => {
     fetchTanks();
   }, [fetchTanks]);
 
+  // -------------------------------
+  // BUTTON HANDLERS
+  // -------------------------------
   const handleAddTank = () => {
     setEditingTank(null);
     setIsFormOpen(true);
@@ -70,15 +76,14 @@ const Dashboard = () => {
   };
 
   const handleDeleteTank = async (tankId) => {
-    if (!window.confirm("Are you sure you want to delete this tank?")) {
-      return;
-    }
+    if (!window.confirm("Are you sure you want to delete this tank?")) return;
 
     try {
       await axios.delete(`${API_BASE_URL}/tanks/delete`, {
         headers: await getAuthHeaders(),
         data: { tankId },
       });
+
       await fetchTanks();
     } catch (err) {
       console.error("Error deleting tank:", err);
@@ -86,45 +91,54 @@ const Dashboard = () => {
     }
   };
 
+  // -------------------------------
+  // CREATE TANK
+  // -------------------------------
+  const createTank = async (formData) => {
+    const payload = {
+      tankName: formData.tankName,
+      tankType: formData.tankType,
+      capacity: formData.capacity,
+      level: formData.level,
+      pumpStatus: formData.pumpStatus,
+    };
+
+    await axios.post(`${API_BASE_URL}/tanks/create`, payload, {
+      headers: await getAuthHeaders(),
+    });
+  };
+
+  // -------------------------------
+  // UPDATE TANK
+  // -------------------------------
+  const updateTank = async (formData) => {
+    if (!formData.tankId) {
+      throw new Error("Tank ID missing for update");
+    }
+
+    const payload = {
+      tankId: formData.tankId,
+      tankName: formData.tankName,
+      tankType: formData.tankType,
+      capacity: formData.capacity,
+      level: formData.level !== undefined ? Number(formData.level) : undefined,
+      pumpStatus: formData.pumpStatus,
+    };
+
+    await axios.post(`${API_BASE_URL}/tanks/update`, payload, {
+      headers: await getAuthHeaders(),
+    });
+  };
+
+  // -------------------------------
+  // SAVE HANDLER (CREATE OR UPDATE)
+  // -------------------------------
   const handleSaveTank = async (formData) => {
     try {
-      const payload = {
-        tankName: formData.tankName,
-        tankType: formData.tankType,
-        capacity: formData.capacity,
-        level: formData.level,
-        pumpStatus: formData.pumpStatus,
-      };
-
-      // Include tankId if editing
       if (formData.tankId) {
-        payload.tankId = formData.tankId;
-      }
-
-      await axios.post(`${API_BASE_URL}/tanks/create`, payload, {
-        method: "POST",
-        headers: await getAuthHeaders(),
-      });
-
-      // If level or pumpStatus was provided, update them separately
-      if (formData.level !== undefined || formData.pumpStatus) {
-        await axios.post(
-          `${API_BASE_URL}/tanks/update`,
-          {
-            tankId:
-              formData.tankId ||
-              Object.keys(tanks).find(
-                (id) => tanks[id].tankName === formData.tankName
-              ),
-            level:
-              formData.level !== undefined ? Number(formData.level) : undefined,
-            pumpStatus: formData.pumpStatus,
-          },
-          {
-            method: "POST",
-            headers: await getAuthHeaders(),
-          }
-        );
+        await updateTank(formData);
+      } else {
+        await createTank(formData);
       }
 
       await fetchTanks();
@@ -134,8 +148,12 @@ const Dashboard = () => {
     }
   };
 
+  // Convert tanks object → array
   const tankArray = Object.values(tanks);
 
+  // -------------------------------
+  // UI
+  // -------------------------------
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -165,6 +183,7 @@ const Dashboard = () => {
             <p className="text-slate-600 mb-6">
               Get started by adding your first tank
             </p>
+
             <button
               onClick={handleAddTank}
               className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition shadow-lg shadow-blue-600/20"
@@ -177,21 +196,22 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tankArray.map((tank) => (
               <div
-                key={tank.tankId || Math.random()}
+                key={tank.tankId}
                 className="bg-white rounded-2xl shadow-lg border border-slate-200 p-6 hover:shadow-xl transition-all duration-300"
               >
+                {/* CARD HEADER */}
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-slate-900 mb-1">
-                      {tank.tankName || "Unnamed Tank"}
+                      {tank.tankName}
                     </h3>
                     <p className="text-sm text-slate-500">{tank.tankType}</p>
                   </div>
+
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleEditTank(tank)}
                       className="p-2 hover:bg-blue-50 rounded-lg transition text-blue-600"
-                      aria-label="Edit tank"
                     >
                       <Edit2 size={18} />
                     </button>
@@ -199,7 +219,6 @@ const Dashboard = () => {
                     <button
                       onClick={() => handleDeleteTank(tank.tankId)}
                       className="p-2 hover:bg-red-50 rounded-lg transition text-red-600"
-                      aria-label="Delete tank"
                     >
                       <Trash2 size={18} />
                     </button>
@@ -213,7 +232,7 @@ const Dashboard = () => {
                         Capacity
                       </span>
                       <span className="text-sm font-semibold text-slate-900">
-                        {tank.capacity || "N/A"}
+                        {tank.capacity}
                       </span>
                     </div>
                   </div>
@@ -224,10 +243,12 @@ const Dashboard = () => {
                         <Droplet size={16} />
                         Level
                       </span>
+
                       <span className="text-sm font-semibold text-slate-900">
                         {tank.level !== undefined ? `${tank.level}%` : "N/A"}
                       </span>
                     </div>
+
                     {tank.level !== undefined && (
                       <div className="w-full bg-slate-200 rounded-full h-2.5">
                         <div
@@ -238,28 +259,26 @@ const Dashboard = () => {
                               ? "bg-yellow-500"
                               : "bg-green-500"
                           }`}
-                          style={{ width: `${Math.min(tank.level, 100)}%` }}
+                          style={{ width: `${tank.level}%` }}
                         ></div>
                       </div>
                     )}
                   </div>
 
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-slate-600 flex items-center gap-1">
-                        <Zap size={16} />
-                        Pump Status
-                      </span>
-                      <span
-                        className={`text-sm font-semibold px-3 py-1 rounded-full ${
-                          tank.pumpStatus === "ON"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-slate-100 text-slate-700"
-                        }`}
-                      >
-                        {tank.pumpStatus || "OFF"}
-                      </span>
-                    </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-slate-600 flex items-center gap-1">
+                      <Zap size={16} />
+                      Pump Status
+                    </span>
+                    <span
+                      className={`text-sm font-semibold px-3 py-1 rounded-full ${
+                        tank.pumpStatus === "ON"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-slate-100 text-slate-700"
+                      }`}
+                    >
+                      {tank.pumpStatus}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -267,19 +286,16 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* Floating Action Button */}
         {!loading && (
           <button
             onClick={handleAddTank}
-            className="fixed bottom-8 right-8 w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl
-             hover:bg-blue-700 transition-all duration-300 hover:scale-110 flex items-center justify-center z-40"
-            aria-label="Add new tank"
+            className="fixed bottom-8 right-8 w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl hover:bg-blue-700
+            transition-all duration-300 hover:scale-110 flex items-center justify-center z-40"
           >
             <Plus size={24} />
           </button>
         )}
 
-        {/* Tank Form Modal */}
         <TankForm
           isOpen={isFormOpen}
           onClose={() => {

@@ -22,9 +22,9 @@ const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const Alerts = lazy(() => import("./pages/Dashboard/Alerts"));
 const SubscriptionPage = lazy(() => import("./pages/SubscriptionPage"));
 
-// const Analytics = lazy(() => import("./pages/Dashboard/Analytics"));
-// const Reports = lazy(() => import("./pages/Dashboard/Reports"));
-// const Settings = lazy(() => import("./pages/Dashboard/Settings"));
+const Analytics = lazy(() => import("./pages/Dashboard/Analytics"));
+const Reports = lazy(() => import("./pages/Dashboard/Reports"));
+const Settings = lazy(() => import("./pages/Dashboard/Settings"));
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -140,9 +140,9 @@ const App = () => {
               >
                 <Route index element={<Dashboard />} />
                 <Route path="alerts" element={<Alerts />} />
-                {/* <Route path="analytics" element={<Analytics />} />
+                <Route path="analytics" element={<Analytics />} />
                 <Route path="reports" element={<Reports />} />
-                <Route path="settings" element={<Settings />} /> */}
+                <Route path="settings" element={<Settings />} />
                 <Route path="subscription" element={<SubscriptionPage />} />
               </Route>
             </Routes>
