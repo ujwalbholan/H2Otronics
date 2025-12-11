@@ -80,6 +80,8 @@ export const updateTankDataById = async (req, res) => {
   try {
     const userId = req.user.uid;
 
+    console.log(userId);
+
     const { tankId, level, pumpStatus, temperature } = req.body;
     if (!userId || !tankId)
       return res.status(400).json({ message: "tankId required" });

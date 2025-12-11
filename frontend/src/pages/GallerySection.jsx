@@ -1,10 +1,9 @@
 import Container from "../components/Container";
+import img1 from "../assets/img1.jpeg";
+import img2 from "../assets/img2.jpeg";
+import img3 from "../assets/img3.jpeg";
 
-const images = [
-  "/images/prototype1.jpg",
-  "/images/prototype2.jpg",
-  "/images/dashboard.jpg",
-];
+const images = [img1, img2, img3];
 
 const GallerySection = () => {
   return (
