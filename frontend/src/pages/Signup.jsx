@@ -1,16 +1,18 @@
 import { useState } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
-function Signin() {
+function Signup() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
   const [loading, setLoading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
   const [errorMsg, setErrorMsg] = useState("");
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -24,9 +26,11 @@ function Signin() {
     e.preventDefault();
     setErrorMsg("");
     setLoading(true);
+
     try {
       const response = await axios.post(
         "https://h2otronics.onrender.com/api/auth/signUp",
+        // "http://localhost:3000/api/auth/signUp",
         formData,
         {
           headers: {
@@ -34,17 +38,20 @@ function Signin() {
           },
         }
       );
+      console.log(response.data.message.message);
+      if (response) {
+        setShowToast(true);
 
-      const token = response.data.idToken;
-      const refreshToken = response.data.refreshToken;
+        setTimeout(() => {
+          setShowToast(false);
+        }, 800);
 
-      // Save token in cookie
-      Cookies.set("authToken", token, { expires: 7 }); // expires in 7 days
-      Cookies.set("refreshToken", refreshToken, { expires: 10 }); // expires in 10 days
-
-      navigate("/dashboard", { replace: true });
+        setTimeout(() => {
+          navigate("/signin", { replace: true });
+        }, 2000);
+      }
     } catch (error) {
-      setErrorMsg(error.response?.data?.message || "Register failed!");
+      setErrorMsg(error.response?.data?.message || "Login failed!");
     } finally {
       setLoading(false);
     }
@@ -59,6 +66,13 @@ function Signin() {
         <div className="absolute bottom-10 left-10 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-4000"></div>
       </div>
 
+      {/* Success Toast */}
+      {showToast && (
+        <div className="fixed top-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg animate-fade">
+          User created successfully!
+        </div>
+      )}
+
       {/* Card */}
       <div className="w-full max-w-md bg-white/40 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8 z-10 mx-4 sm:mx-0">
         {/* Logo */}
@@ -67,7 +81,7 @@ function Signin() {
             H<sub>₂</sub>Otronics
           </h1>
           <p className="text-gray-600 mt-2 text-sm sm:text-base">
-            Sign up to continue
+            SignUp to continue
           </p>
         </div>
 
@@ -112,7 +126,6 @@ function Signin() {
           {errorMsg && (
             <p className="text-red-500 text-sm text-center">{errorMsg}</p>
           )}
-
           <button
             type="submit"
             disabled={loading}
@@ -122,24 +135,25 @@ function Signin() {
                 : "bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-blue-500/40"
             }`}
           >
-            {loading ? "Signing up..." : "Sign Up"}
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
         <p className="text-center text-gray-600 text-sm mt-6">
           Don’t have an account?{" "}
           <a
-            href="/signin"
+            href="/signIn"
             className="text-blue-600 hover:underline font-semibold"
           >
-            Sign in
+            SignIn
           </a>
         </p>
       </div>
 
       {/* Custom animation for the floating blobs */}
-      <style>{`
-    @keyframes blob {
+      <style>
+        {`
+      @keyframes blob {
       0% {
         transform: translate(0px, 0px) scale(1);
       }
@@ -162,9 +176,20 @@ function Signin() {
     .animation-delay-4000 {
       animation-delay: 4s;
     }
-  `}</style>
+       @keyframes fadeEffect {
+          0%   { opacity: 0; transform: translateY(-10px); }
+          20%  { opacity: 1; transform: translateY(0px); }
+          80%  { opacity: 1; }
+          100% { opacity: 0; transform: translateY(-10px); }
+        }
+
+        .animate-fade {
+          animation: fadeEffect 0.8s ease-in-out forwards;
+        }
+  `}
+      </style>
     </div>
   );
 }
 
-export default Signin;
+export default Signup;

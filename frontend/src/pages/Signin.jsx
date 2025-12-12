@@ -39,11 +39,9 @@ function Signin() {
       );
 
       const token = response.data.idToken;
-      const refreshToken = response.data.refreshToken;
 
       // Save token in cookie
       Cookies.set("authToken", token, { expires: 7 }); // expires in 7 days
-      Cookies.set("refreshToken", refreshToken,{expires: 10}); // expires in 10 days
       
       navigate("/dashboard", { replace: true });
     } catch (error) {
@@ -70,7 +68,7 @@ function Signin() {
             H<sub>₂</sub>Otronics
           </h1>
           <p className="text-gray-600 mt-2 text-sm sm:text-base">
-            Sign in to continue
+            SignIn to continue
           </p>
         </div>
 
@@ -145,7 +143,7 @@ function Signin() {
             href="/signup"
             className="text-blue-600 hover:underline font-semibold"
           >
-            Sign up
+            SignUp
           </a>
         </p>
       </div>
