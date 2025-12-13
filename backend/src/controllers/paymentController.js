@@ -27,8 +27,13 @@ export async function makePayment(req, res) {
         },
       ],
       mode: "subscription",
-      success_url: "https://h2-otronics.vercel.app/dashboard/subscription",
-      cancel_url: "https://h2-otronics.vercel.app/dashboard/subscription",
+      // for production environment
+      // success_url: "https://h2-otronics.vercel.app/dashboard/subscription",
+      // cancel_url: "https://h2-otronics.vercel.app/dashboard/subscription",
+      
+      // for development environment
+      success_url: "http://localhost:5173/dashboard/subscription",
+      cancel_url: "http://localhost:5173/dashboard/subscription",
     });
 
     return res.json({ url: session.url });
