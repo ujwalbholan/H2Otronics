@@ -88,6 +88,7 @@ function Signin() {
               value={formData.email}
               onChange={handleChange}
               required
+              placeholder="email@gmail.com"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
             />
           </div>
@@ -106,6 +107,7 @@ function Signin() {
               value={formData.password}
               onChange={handleChange}
               required
+              placeholder="password"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
             />
           </div>

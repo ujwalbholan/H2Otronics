@@ -80,7 +80,7 @@ const LeftSideBar = ({
     } finally {
       Cookies.remove("authToken");
       setIsLoggingOut(false);
-      navigate("/signin", { replace: true });
+      navigate("/", { replace: true });
     }
   };
 

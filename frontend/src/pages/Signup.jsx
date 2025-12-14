@@ -101,6 +101,7 @@ function Signup() {
               value={formData.email}
               onChange={handleChange}
               required
+              placeholder="email@gmail.com"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
             />
           </div>
@@ -119,6 +120,7 @@ function Signup() {
               value={formData.password}
               onChange={handleChange}
               required
+              placeholder="password"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
             />
           </div>
@@ -135,12 +137,12 @@ function Signup() {
                 : "bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-blue-500/40"
             }`}
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Signing Up..." : "Sign Up"}
           </button>
         </form>
 
         <p className="text-center text-gray-600 text-sm mt-6">
-          Don’t have an account?{" "}
+         Already have an account?{" "}
           <a
             href="/signIn"
             className="text-blue-600 hover:underline font-semibold"

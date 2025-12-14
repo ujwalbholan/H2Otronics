@@ -1,18 +1,17 @@
-import { Navigate } from "react-router-dom";
-import Cookies from "js-cookie"; 
+import { Navigate, useLocation } from "react-router-dom";
+import Cookies from "js-cookie";
 import isTokenValid from "../Utils/validToken";
 
 const ProtectedRoute = ({ children }) => {
-  const token = Cookies.get("authToken"); 
+  const token = Cookies.get("authToken");
+  const location = useLocation();
 
-  const authorized = token && isTokenValid(token);
-
-  // If not authorized → redirect to login
-  if (!authorized) {
-    return <Navigate to="/signin" replace />;
+  // Only redirect if token is missing or invalid
+  if (!token || !isTokenValid(token)) {
+    Cookies.remove("authToken");
+    return <Navigate to="/signin" replace state={{ from: location }} />;
   }
 
-  // If authorized → render the protected content
   return children;
 };
 

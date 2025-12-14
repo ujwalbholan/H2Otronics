@@ -6,7 +6,6 @@ import { handleControllerError } from "../utils/errorUtils.js";
 // Create a tank (metadata only – telemetry is handled separately)
 export const createTank = async (req, res) => {
   try {
-
     const userId = req.user.uid;
 
     if (!userId) {
@@ -21,7 +20,6 @@ export const createTank = async (req, res) => {
       pumpStatus,
       temperature = 0,
     } = req.body;
-
 
     if (!tankName || !tankType || !capacity) {
       return res
@@ -38,7 +36,6 @@ export const createTank = async (req, res) => {
 
     const userRef = db.collection("users").doc(userId);
     const tanksRef = userRef.collection("tanks");
-
 
     // Optional: enforce unique tank names (case insensitive) per user
     const duplicate = await tanksRef
@@ -78,13 +75,20 @@ export const createTank = async (req, res) => {
 // Update tank data (from IoT device)
 export const updateTankDataById = async (req, res) => {
   try {
-    const userId = req.user.uid;
+    const userId = req.user?.uid;
+    const {
+      tankId,
+      level,
+      pumpStatus,
+      temperature,
+      tankName,
+      tankType,
+      capacity,
+    } = req.body;
 
-    console.log(userId);
-
-    const { tankId, level, pumpStatus, temperature } = req.body;
-    if (!userId || !tankId)
-      return res.status(400).json({ message: "tankId required" });
+    if (!userId || !tankId) {
+      return res.status(400).json({ message: "tankId and userId required" });
+    }
 
     const tankRef = db
       .collection("users")
@@ -92,12 +96,18 @@ export const updateTankDataById = async (req, res) => {
       .collection("tanks")
       .doc(tankId);
 
-    const updatedTank = {
-      level,
-      pumpStatus,
-      temperature,
-      updated: new Date().toISOString(),
-    };
+    // Build updated tank object and filter out undefined fields
+    const updatedTank = Object.fromEntries(
+      Object.entries({
+        level,
+        pumpStatus,
+        temperature,
+        tankName,
+        tankType,
+        capacity,
+        updated: new Date().toISOString(),
+      }).filter(([_, value]) => value !== undefined)
+    );
 
     await tankRef.set(updatedTank, { merge: true });
 
@@ -105,10 +115,10 @@ export const updateTankDataById = async (req, res) => {
     const tankSnap = await tankRef.get();
     const tank = tankSnap.data();
     if (tank.autoPump) {
-      if (level < tank.lowThreshold) {
+      if (tank.level < tank.lowThreshold) {
         console.log(`Turning pump ON for tank ${tankId}`);
-      } else if (level > tank.highThreshold) {
-        console.log(`🔼urning pump OFF for tank ${tankId}`);
+      } else if (tank.level > tank.highThreshold) {
+        console.log(`Turning pump OFF for tank ${tankId}`);
       }
     }
 

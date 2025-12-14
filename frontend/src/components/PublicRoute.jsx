@@ -1,18 +1,18 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
-import isTokenValid from "../Utils/validToken";
 
 const PublicRoute = ({ children }) => {
   const token = Cookies.get("authToken");
+  const location = useLocation();
 
-  const authorized = token && isTokenValid(token);
-
-  // If token exists → user is logged in → redirect to dashboard
-  if (authorized) {
+  // Only block signin/signup
+  if (
+    token &&
+    (location.pathname === "/signin" || location.pathname === "/signup")
+  ) {
     return <Navigate to="/dashboard" replace />;
   }
 
-  // If no token → user not logged in → allow access
   return children;
 };
 

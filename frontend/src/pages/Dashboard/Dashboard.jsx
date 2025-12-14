@@ -5,8 +5,8 @@ import { Plus, Edit2, Trash2, Droplet, Zap } from "lucide-react";
 import TankForm from "../../components/TankForm";
 import { auth } from "../../firebase/Firebase";
 
-const API_BASE_URL = "https://h2otronics.onrender.com/api";
-// const API_BASE_URL = "http://localhost:3000/api";
+// const API_BASE_URL = "https://h2otronics.onrender.com/api";
+const API_BASE_URL = "http://localhost:3000/api";
 
 const Dashboard = () => {
   const [tanks, setTanks] = useState({});
@@ -125,9 +125,21 @@ const Dashboard = () => {
       pumpStatus: formData.pumpStatus,
     };
 
-    await axios.post(`${API_BASE_URL}/tanks/update`, payload, {
-      headers: await getAuthHeaders(),
-    });
+    try {
+      const headers = await getAuthHeaders();
+      const res = await axios.post(
+        `http://localhost:3000/api/tanks/update`,
+        payload,
+        {
+          headers,
+        }
+      );
+      alert("Tank updated successfully");
+      return res.data;
+    } catch (err) {
+      console.error("Error updating tank:", err.response?.data || err.message);
+      throw err;
+    }
   };
 
   // -------------------------------
@@ -151,9 +163,6 @@ const Dashboard = () => {
   // Convert tanks object → array
   const tankArray = Object.values(tanks);
 
-  // -------------------------------
-  // UI
-  // -------------------------------
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

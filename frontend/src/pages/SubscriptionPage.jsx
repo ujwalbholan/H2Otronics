@@ -3,7 +3,7 @@ import Container from "../components/Container";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import ToastContainer from "../components/Toast";
+import { useState } from "react";
 
 const plans = [
   {
@@ -45,41 +45,40 @@ const plans = [
 
 const SubscriptionPage = () => {
   const navigate = useNavigate();
+  const [loadingPlan, setLoadingPlan] = useState(null);
 
-  const getAuthHeaders = async () => {
-    let Token = Cookies.get("authToken");
+  const handleSubscribe = async (plan) => {
+    const token = Cookies.get("authToken");
 
-    if (!Token) {
+    // If not logged in, redirect to signin first
+    if (!token) {
       navigate("/signin");
+      return;
     }
 
-    return {
-      Authorization: `Bearer ${Token}`,
-    };
-  };
+    setLoadingPlan(plan.name);
 
-  const makePayment = async (plan) => {
     try {
-      const body = {
-        planName: plan.name,
-        priceId: plan.priceId,
-        price: plan.price,
+      const headers = {
+        Authorization: `Bearer ${token}`,
       };
-      const headers = await getAuthHeaders();
 
-      //url change
-      // local url
-      // "http://localhost:3000/api/payment",
       const response = await axios.post(
         "https://h2otronics.onrender.com/api/payment",
-        body,
         {
-          headers: headers,
-        }
+          planName: plan.name,
+          priceId: plan.priceId,
+          price: plan.price,
+        },
+        { headers }
       );
+
       window.location.href = response.data.url;
-    } catch (error) {
-      throw new Error("Error from payment", error);
+    } catch (err) {
+      console.error("Payment error:", err);
+      alert("Failed to initiate payment. Please try again.");
+    } finally {
+      setLoadingPlan(null);
     }
   };
 
@@ -115,9 +114,7 @@ const SubscriptionPage = () => {
             >
               <Motion.div
                 className={`absolute inset-0 rounded-2xl bg-linear-to-r ${plan.color} opacity-20 blur-xl`}
-                animate={{
-                  opacity: [0.15, 0.25, 0.15],
-                }}
+                animate={{ opacity: [0.15, 0.25, 0.15] }}
                 transition={{
                   repeat: Infinity,
                   duration: 3,
@@ -140,20 +137,20 @@ const SubscriptionPage = () => {
                 </p>
 
                 <ul className="space-y-3 text-gray-700 mb-8">
-                  {plan.features.map((feature, index) => (
-                    <li key={index} className="flex items-center gap-2">
+                  {plan.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-center gap-2">
                       <span className="text-blue-500">✔</span> {feature}
                     </li>
                   ))}
                 </ul>
 
                 <Motion.button
-                  onClick={() => makePayment(plan)}
+                  onClick={() => handleSubscribe(plan)}
                   whileTap={{ scale: 0.95 }}
                   whileHover={{ backgroundColor: "#2563eb" }}
                   className="w-full py-3 font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
                 >
-                  Subscribe
+                  {loadingPlan === plan.name ? "Processing..." : "Subscribe"}
                 </Motion.button>
               </div>
             </Motion.div>

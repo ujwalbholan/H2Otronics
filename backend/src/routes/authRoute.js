@@ -4,6 +4,8 @@ import {
   loginController,
   forgetPassword,
   logout,
+  getMeController,
+  resetPasswordController,
 } from "../controllers/authController.js";
 import { authenticate } from "../middleware/authenticate.js";
 
@@ -13,5 +15,7 @@ authRoute.post("/signUp", registerController);
 authRoute.post("/signIn", loginController);
 authRoute.post("/forgetPassword", forgetPassword);
 authRoute.post("/logout", authenticate, logout);
+authRoute.get("/me", authenticate, getMeController);
+authRoute.post("/resetPassword",authenticate, resetPasswordController);
 
 export default authRoute;

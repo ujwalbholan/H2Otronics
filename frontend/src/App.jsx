@@ -1,12 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
+import PublicLayout from "./components/PublicLayout";
 import Loading from "./components/Loading";
-
-import { lazy, Suspense, useState, useEffect } from "react";
-import Cookies from "js-cookie";
+import { lazy, Suspense } from "react";
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -17,6 +14,7 @@ const GallerySection = lazy(() => import("./pages/GallerySection"));
 const ContactSection = lazy(() => import("./pages/ContactSection"));
 const Signin = lazy(() => import("./pages/Signin"));
 const Signup = lazy(() => import("./pages/Signup"));
+
 const DashboardLayout = lazy(() => import("./pages/Dashboard/DashboardLayout"));
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const Alerts = lazy(() => import("./pages/Dashboard/Alerts"));
@@ -27,17 +25,9 @@ const SubscriptionPage = lazy(() => import("./pages/SubscriptionPage"));
 // const Settings = lazy(() => import("./pages/Dashboard/Settings"));
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const token = Cookies.get("authToken");
-
-    if (token) setIsAuthenticated(true);
-  }, []);
   return (
     <div className="flex flex-col min-h-screen">
       <Router>
-        {!isAuthenticated && <Header />}
         <main className="grow">
           <Suspense
             fallback={
@@ -47,89 +37,28 @@ const App = () => {
             }
           >
             <Routes>
-              {/* public route */}
+              {/* Public routes */}
               <Route
                 path="/"
                 element={
                   <PublicRoute>
-                    <Home />
+                    <PublicLayout />
                   </PublicRoute>
                 }
-              />
-              <Route
-                path="/about"
-                element={
-                  <PublicRoute>
-                    <About />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/features"
-                element={
-                  <PublicRoute>
-                    <FeaturesSection />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/subscription"
-                element={
-                  <PublicRoute>
-                    <SubscriptionPage />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/demo"
-                element={
-                  <PublicRoute>
-                    <DemoSection />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/team"
-                element={
-                  <PublicRoute>
-                    <TeamSection />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/gallery"
-                element={
-                  <PublicRoute>
-                    <GallerySection />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/contact"
-                element={
-                  <PublicRoute>
-                    <ContactSection />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/signin"
-                element={
-                  <PublicRoute>
-                    <Signin />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/signup"
-                element={
-                  <PublicRoute>
-                    <Signup />
-                  </PublicRoute>
-                }
-              />
+              >
+                <Route index element={<Home />} />
+                <Route path="about" element={<About />} />
+                <Route path="features" element={<FeaturesSection />} />
+                <Route path="subscription" element={<SubscriptionPage />} />
+                <Route path="demo" element={<DemoSection />} />
+                <Route path="team" element={<TeamSection />} />
+                <Route path="gallery" element={<GallerySection />} />
+                <Route path="contact" element={<ContactSection />} />
+                <Route path="signin" element={<Signin />} />
+                <Route path="signup" element={<Signup />} />
+              </Route>
 
-              {/* protected routes */}
+              {/* Protected routes */}
               <Route
                 path="/dashboard/*"
                 element={
@@ -148,10 +77,10 @@ const App = () => {
             </Routes>
           </Suspense>
         </main>
-        {!isAuthenticated && <Footer />}
       </Router>
     </div>
   );
 };
 
 export default App;
+

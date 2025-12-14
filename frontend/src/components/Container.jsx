@@ -2,7 +2,7 @@
 
 const Container = ({ children }) => {
   return (
-    <div className="flex flex-col items-center justify-center w-4/5 mx-auto">
+    <div className="flex flex-col items-center justify-center w-4/5 mx-auto h-[85vh]">
       <div
         className="absolute inset-0 -z-1"
         style={{

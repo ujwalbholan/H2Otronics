@@ -65,7 +65,6 @@ export async function registerController(req, res) {
       expiresIn: data.expiresIn,
       localId: data.localId,
     });
-    
   } catch (error) {
     console.error("Registration Error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -151,5 +150,106 @@ export async function logout(req, res) {
     return res
       .status(500)
       .json({ message: "Logout failed", error: error.message });
+  }
+}
+
+function extractNameFromEmail(email) {
+  if (!email) return null;
+
+  const localPart = email.split("@")[0];
+
+  return localPart
+    .replace(/[._-]+/g, " ") // replace dots, underscores, hyphens with space
+    .replace(/\d+/g, "") // remove numbers
+    .trim()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+export async function getMeController(req, res) {
+  try {
+    const user = req.user;
+
+    const name = user.name || extractNameFromEmail(user.email) || null;
+
+    return res.status(200).json({
+      uid: user.uid,
+
+      email: user.email || null,
+      emailVerified: user.email_verified || false,
+      phoneNumber: user.phone_number || null,
+
+      name,
+      picture: user.picture || null,
+
+      signInProvider: user.firebase?.sign_in_provider || null,
+    });
+  } catch (error) {
+    console.error("GET ME ERROR:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+export async function resetPasswordController(req, res) {
+  try {
+    const { email, oldPassword, newPassword } = req.body;
+
+    console.log("email",email);
+    console.log("oldPassword",oldPassword);
+    console.log("newPassword",newPassword);
+
+    if (!email || !oldPassword || !newPassword) {
+      return res
+        .status(400)
+        .json({ message: "Email, old password, and new password are required" });
+    }
+
+    // 1️⃣ Re-authenticate user with old password
+    const firebaseSignInURL = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAS3ewaT8u-n-f5pccaxOh847tAngOxFHc`;
+    const signInResponse = await fetch(firebaseSignInURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        password: oldPassword,
+        returnSecureToken: true,
+      }),
+    });
+
+    const signInData = await signInResponse.json();
+
+    if (!signInResponse.ok) {
+      return res
+        .status(400)
+        .json({ message: signInData.error?.message || "Old password is incorrect" });
+    }
+
+    const idToken = signInData.idToken;
+
+    // 2️⃣ Update password using Firebase REST API
+    const firebaseUpdateURL = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAS3ewaT8u-n-f5pccaxOh847tAngOxFHc`;
+    const updateResponse = await fetch(firebaseUpdateURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        idToken,
+        password: newPassword,
+        returnSecureToken: true,
+      }),
+    });
+
+    const updateData = await updateResponse.json();
+
+    if (!updateResponse.ok) {
+      return res
+        .status(400)
+        .json({ message: updateData.error?.message || "Failed to update password" });
+    }
+
+    return res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 }

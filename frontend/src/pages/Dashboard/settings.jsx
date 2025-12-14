@@ -1,12 +1,28 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { LogOut, User, Mail, Phone, Camera } from "lucide-react";
+import { User, Mail, Phone, Camera, Lock, X } from "lucide-react";
 
 const Settings = () => {
   const [user, setUser] = useState(null);
-  const [isSaving, setIsSaving] = useState(false);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [profileImage, setProfileImage] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  // Password modal state
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+
+  // Helper to convert file to Base64
+  const readFileAsBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -14,16 +30,20 @@ const Settings = () => {
         const token = Cookies.get("authToken");
         if (!token) return;
 
-        const res = await axios.get(
-          "https://h2otronics.onrender.com/api/auth/me",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const res = await axios.get("http://localhost:3000/api/auth/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-        setUser(res.data.user);
+        setUser(res.data);
+
+        // Load profile image from localStorage
+        const savedImage = localStorage.getItem("profileImage");
+        if (savedImage) setProfileImage(savedImage);
+
+        // Load phone number from localStorage if exists
+        const savedPhone = localStorage.getItem("phoneNumber");
+        if (savedPhone) setPhoneNumber(savedPhone);
+        else setPhoneNumber(res.data.phoneNumber || "");
       } catch (error) {
         console.error("Failed to fetch user:", error);
       }
@@ -32,25 +52,72 @@ const Settings = () => {
     fetchUser();
   }, []);
 
-  const handleLogout = async () => {
-    if (isLoggingOut) return;
-    setIsLoggingOut(true);
+  // Profile image upload
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Image must be less than 2MB");
+      return;
+    }
+    const base64 = await readFileAsBase64(file);
+    localStorage.setItem("profileImage", base64);
+    setProfileImage(base64);
+  };
 
-    const token = Cookies.get("authToken");
+  // Phone number handling
+  const handlePhoneChange = (e) => setPhoneNumber(e.target.value);
+  const handlePhoneSave = () => {
+    localStorage.setItem("phoneNumber", phoneNumber);
+    alert("Phone number saved!");
+  };
+
+  // Open/close password modal
+  const openPasswordModal = () => setShowPasswordModal(true);
+  const closePasswordModal = () => {
+    setShowPasswordModal(false);
+    setOldPassword("");
+    setNewPassword("");
+  };
+
+  // Change password (authenticated users only)
+  const handleChangePassword = async () => {
+    if (!oldPassword || !newPassword) {
+      alert("Please fill in all fields");
+      return;
+    }
+    setIsUpdatingPassword(true);
 
     try {
+      const token = Cookies.get("authToken");
+      if (!token) {
+        alert("User not authenticated!");
+        setIsUpdatingPassword(false);
+        return;
+      }
+
       await axios.post(
-        "https://h2otronics.onrender.com/api/auth/logout",
-        {},
+        "http://localhost:3000/api/auth/resetPassword",
         {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
+          email: user.email,
+          oldPassword,
+          newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
+
+      alert("Password updated successfully!");
+      closePasswordModal();
     } catch (error) {
-      console.error("Failed to logout:", error);
+      alert(
+        error.response?.data?.message || "Failed to update password. Try again."
+      );
     } finally {
-      Cookies.remove("authToken");
-      window.location.href = "/signin";
+      setIsUpdatingPassword(false);
     }
   };
 
@@ -67,95 +134,148 @@ const Settings = () => {
       <h1 className="text-3xl font-bold text-slate-800 mb-8">Settings</h1>
 
       <div className="bg-white shadow-lg rounded-xl p-8 border border-slate-200">
-        <div className="flex flex-col md:flex-row items-center gap-6 pb-8 border-b border-slate-200">
-          <div className="relative">
-            <img
-              src={user.photoURL || "https://via.placeholder.com/150"}
-              alt="User"
-              className="w-32 h-32 rounded-full object-cover shadow-md"
-            />
+        {/* Profile Header */}
+        <div className="flex flex-col md:flex-row items-center gap-6 pb-8 border-b">
+          <div className="relative w-32 h-32">
+            {!imageLoaded && (profileImage || user.picture) && (
+              <div className="absolute inset-0 rounded-full bg-slate-200 animate-pulse" />
+            )}
+
+            {profileImage || user.picture ? (
+              <img
+                src={profileImage || user.picture}
+                alt="User"
+                onLoad={() => setImageLoaded(true)}
+                className="w-32 h-32 rounded-full object-cover transition-opacity duration-300"
+              />
+            ) : (
+              <div className="w-32 h-32 rounded-full bg-slate-200 flex items-center justify-center">
+                <User size={40} className="text-slate-500" />
+              </div>
+            )}
+
             <label className="absolute bottom-2 right-2 bg-blue-600 text-white p-2 rounded-full cursor-pointer shadow-md hover:bg-blue-700">
               <Camera size={16} />
-              <input type="file" className="hidden" />
+              <input
+                type="file"
+                className="hidden"
+                accept="image/*"
+                onChange={handleImageUpload}
+              />
             </label>
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold text-slate-800">
-              {user.name}
-            </h2>
+            <h2 className="text-2xl font-semibold">{user.name}</h2>
             <p className="text-slate-500">{user.email}</p>
           </div>
         </div>
 
-        {/* User Info Form */}
+        {/* User Info */}
         <div className="mt-8 space-y-6">
           {/* Name */}
           <div>
-            <p className="text-sm font-medium text-slate-700 mb-1">Full Name</p>
-            <div className="flex items-center gap-3 p-3 border border-slate-300 rounded-lg bg-slate-50">
-              <User size={18} className="text-slate-500" />
+            <label className="text-sm font-medium">Full Name</label>
+            <div className="flex items-center gap-3 p-3 border rounded-lg">
+              <User size={18} />
               <input
                 type="text"
                 defaultValue={user.name}
-                className="bg-transparent outline-none w-full text-slate-700"
+                className="w-full outline-none"
+                disabled
               />
             </div>
           </div>
 
           {/* Email */}
           <div>
-            <p className="text-sm font-medium text-slate-700 mb-1">
-              Email Address
-            </p>
-            <div className="flex items-center gap-3 p-3 border border-slate-300 rounded-lg bg-slate-50">
-              <Mail size={18} className="text-slate-500" />
+            <label className="text-sm font-medium">Email</label>
+            <div className="flex items-center gap-3 p-3 border rounded-lg">
+              <Mail size={18} />
               <input
                 type="email"
                 defaultValue={user.email}
-                className="bg-transparent outline-none w-full text-slate-700"
+                className="w-full outline-none"
+                disabled
               />
             </div>
           </div>
 
           {/* Phone */}
           <div>
-            <p className="text-sm font-medium text-slate-700 mb-1">
-              Phone Number (optional)
-            </p>
-            <div className="flex items-center gap-3 p-3 border border-slate-300 rounded-lg bg-slate-50">
-              <Phone size={18} className="text-slate-500" />
+            <label className="text-sm font-medium">Phone Number</label>
+            <div className="flex items-center gap-3 p-3 border rounded-lg">
+              <Phone size={18} />
               <input
                 type="text"
-                defaultValue={user.phone || ""}
-                className="bg-transparent outline-none w-full text-slate-700"
+                value={phoneNumber}
+                onChange={handlePhoneChange}
+                className="w-full outline-none"
+                placeholder="Enter phone number"
               />
             </div>
-          </div>
-
-          {/* Save Button */}
-          <div className="pt-4">
             <button
-              disabled={isSaving}
-              className="w-full md:w-48 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 shadow-md transition disabled:opacity-50"
+              onClick={handlePhoneSave}
+              className="mt-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
             >
-              {isSaving ? "Saving..." : "Save Changes"}
+              Save Phone Number
             </button>
           </div>
-        </div>
 
-        {/* Logout Button */}
-        <div className="mt-10 pt-6 border-t border-slate-200">
+          {/* Change Password */}
           <button
-            onClick={handleLogout}
-            disabled={isLoggingOut}
-            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-lg font-semibold shadow-md transition disabled:opacity-50"
+            onClick={() => setShowPasswordModal(true)}
+            className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-3 rounded-lg hover:bg-indigo-700"
           >
-            <LogOut size={18} />
-            {isLoggingOut ? "Logging out..." : "Logout"}
+            <Lock size={18} />
+            Change Password
           </button>
         </div>
       </div>
+
+      {/* Password Modal */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 w-96 relative">
+            <button
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+              onClick={closePasswordModal}
+            >
+              <X size={20} />
+            </button>
+            <h2 className="text-xl font-semibold mb-4">Change Password</h2>
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium">Old Password</label>
+                <input
+                  type="password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  className="w-full p-2 border rounded-lg outline-none"
+                  placeholder="Enter old password"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium">New Password</label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full p-2 border rounded-lg outline-none"
+                  placeholder="Enter new password"
+                />
+              </div>
+              <button
+                onClick={handleChangePassword}
+                disabled={isUpdatingPassword}
+                className="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+              >
+                {isUpdatingPassword ? "Updating..." : "Change Password"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
