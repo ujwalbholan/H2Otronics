@@ -128,7 +128,7 @@ const Dashboard = () => {
     try {
       const headers = await getAuthHeaders();
       const res = await axios.post(
-        `${API_BASE_URL}/api/tanks/update`,
+        `${API_BASE_URL}/tanks/update`,
         payload,
         {
           headers,
