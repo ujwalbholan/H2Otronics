@@ -5,6 +5,11 @@ import PublicLayout from "./components/PublicLayout";
 import Loading from "./components/Loading";
 import { lazy, Suspense } from "react";
 
+
+import Analytics from "./pages/Dashboard/Analytics";
+import Reports from "./pages/Dashboard/Reports";
+import Settings from "./pages/Dashboard/Settings";
+
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const FeaturesSection = lazy(() => import("./pages/FeaturesSection"));
@@ -24,9 +29,6 @@ const SubscriptionPage = lazy(() => import("./pages/SubscriptionPage"));
 // const Reports = lazy(() => import("./pages/Dashboard/Reports"));
 // const Settings = lazy(() => import("./pages/Dashboard/Settings"));
 
-import Analytics from "./pages/Dashboard/Analytics";
-import Reports from "./pages/Dashboard/Reports";
-import Settings from "./pages/Dashboard/Settings";
 
 const App = () => {
   return (
