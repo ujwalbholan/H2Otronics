@@ -20,9 +20,13 @@ const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const Alerts = lazy(() => import("./pages/Dashboard/Alerts"));
 const SubscriptionPage = lazy(() => import("./pages/SubscriptionPage"));
 
-const Analytics = lazy(() => import("./pages/Dashboard/Analytics"));
-const Reports = lazy(() => import("./pages/Dashboard/Reports"));
-const Settings = lazy(() => import("./pages/Dashboard/Settings"));
+// const Analytics = lazy(() => import("./pages/Dashboard/Analytics"));
+// const Reports = lazy(() => import("./pages/Dashboard/Reports"));
+// const Settings = lazy(() => import("./pages/Dashboard/Settings"));
+
+import Analytics from "./pages/Dashboard/Analytics";
+import Reports from "./pages/Dashboard/Reports";
+import Settings from "./pages/Dashboard/Settings";
 
 const App = () => {
   return (
