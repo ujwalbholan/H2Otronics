@@ -11,7 +11,7 @@ const team = [
 const TeamSection = () => {
   return (
     <Container>
-      <section id="team" className="w-full py-20 ">
+      <section id="team" className="w-full py-20 md:py-20 h-[85vh]">
         <div className="mb-12 text-center">
           <h3 className="text-3xl font-bold text-gray-800 md:text-4xl">
             Our Team

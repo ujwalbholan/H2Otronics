@@ -5,7 +5,7 @@ import WaterButton from "../components/WaterButton";
 const About = () => {
   return (
     <Container>
-      <section id="about" className="w-full py-20">
+      <section id="about" className="w-full py-20 md:py-20 h-[85vh]">
         <div className="max-w-5xl px-4 mx-auto text-center">
           <h2 className="mb-6 text-3xl font-bold text-blue-800 md:text-4xl">
             About Us
