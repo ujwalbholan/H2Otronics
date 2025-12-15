@@ -6,10 +6,6 @@ import Loading from "./components/Loading";
 import { lazy, Suspense } from "react";
 
 
-import Analytics from "./pages/Dashboard/Analytics";
-import Reports from "./pages/Dashboard/Reports";
-import Settings from "./pages/Dashboard/Settings";
-
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const FeaturesSection = lazy(() => import("./pages/FeaturesSection"));
@@ -19,15 +15,15 @@ const GallerySection = lazy(() => import("./pages/GallerySection"));
 const ContactSection = lazy(() => import("./pages/ContactSection"));
 const Signin = lazy(() => import("./pages/Signin"));
 const Signup = lazy(() => import("./pages/Signup"));
+const SubscriptionPage = lazy(() => import("./pages/SubscriptionPage"));
 
 const DashboardLayout = lazy(() => import("./pages/Dashboard/DashboardLayout"));
 const Dashboard = lazy(() => import("./pages/Dashboard/Dashboard"));
 const Alerts = lazy(() => import("./pages/Dashboard/Alerts"));
-const SubscriptionPage = lazy(() => import("./pages/SubscriptionPage"));
 
-// const Analytics = lazy(() => import("./pages/Dashboard/Analytics"));
-// const Reports = lazy(() => import("./pages/Dashboard/Reports"));
-// const Settings = lazy(() => import("./pages/Dashboard/Settings"));
+const Analytics = lazy(() => import("./pages/Dashboard/Analytics.jsx"));
+const Reports = lazy(() => import("./pages/Dashboard/Reports.jsx"));
+const Settings = lazy(() => import("./pages/Dashboard/Settings.jsx"));
 
 
 const App = () => {
