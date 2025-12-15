@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -15,6 +16,9 @@ const Settings = () => {
   const [newPassword, setNewPassword] = useState("");
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
 
+  const API_BASE_URL = "https://h2otronics.onrender.com/api";
+  // const API_BASE_URL = "http://localhost:3000/api";
+
   // Helper to convert file to Base64
   const readFileAsBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -30,7 +34,7 @@ const Settings = () => {
         const token = Cookies.get("authToken");
         if (!token) return;
 
-        const res = await axios.get("http://localhost:3000/api/auth/me", {
+        const res = await axios.get(`${API_BASE_URL}/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -97,7 +101,7 @@ const Settings = () => {
       }
 
       await axios.post(
-        "http://localhost:3000/api/auth/resetPassword",
+        `${API_BASE_URL}/auth/resetPassword`,
         {
           email: user.email,
           oldPassword,
