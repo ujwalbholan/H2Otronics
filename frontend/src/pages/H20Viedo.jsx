@@ -4,7 +4,7 @@ import viedo from "../assets/viedo.mp4";
 const H20Video = () => {
   return (
     <Container>
-      <section className="w-full py-12 md:py-20">
+      <section className="w-full py-12 md:py-20 min-h-[85vh] flex items-center">
         <div className="flex flex-col items-center justify-between gap-10 px-4 mx-auto md:flex-row">
           <div className="flex-1 text-center md:text-left">
             <h3 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">

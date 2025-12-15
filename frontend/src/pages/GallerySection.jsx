@@ -8,7 +8,7 @@ const images = [img1, img2, img3];
 const GallerySection = () => {
   return (
     <Container>
-      <section id="gallery" className="w-full py-12 md:py-20  h-[85vh]">
+      <section id="gallery" className="w-full py-12 md:py-20  min-h-[85vh] flex items-center">
         <div className="max-w-6xl px-4 mx-auto text-center">
           <h3 className="mb-10 text-2xl font-bold text-gray-800 md:text-3xl">
             Gallery
