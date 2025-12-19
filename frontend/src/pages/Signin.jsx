@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import ForgotPasswordLink from "./ForgotPasswordLink";
 
 function Signin() {
   const [formData, setFormData] = useState({
@@ -42,7 +43,7 @@ function Signin() {
 
       // Save token in cookie
       Cookies.set("authToken", token, { expires: 7 }); // expires in 7 days
-      
+
       navigate("/dashboard", { replace: true });
     } catch (error) {
       setErrorMsg(error.response?.data?.message || "Login failed!");
@@ -117,14 +118,15 @@ function Signin() {
           )}
 
           {/* Forgot Password */}
-          <div className="text-right mb-4">
+          {/* <div className="text-right mb-4">
             <a
-              href="/forgot-password"
+              href="http://localhost:3000/api/auth/forgot-password"
               className="text-sm text-blue-600 hover:underline"
             >
               Forgot password?
             </a>
-          </div>
+          </div> */}
+          <ForgotPasswordLink />
 
           <button
             type="submit"

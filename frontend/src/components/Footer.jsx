@@ -6,11 +6,11 @@ const Footer = () => {
         <p>© 2025 H₂Otronics. All rights reserved.</p>
         <p>
           Follow us:
-          <a href="#" className="underline ml-2">
+          <a href="https://github.com/H2Otronics" target="_blank" className="underline ml-2">
             GitHub
           </a>
           ,
-          <a href="#" className="underline ml-2">
+          <a href="https://www.linkedin.com/in/hard-tom-988252394/" target="_blank" className="underline ml-2">
             LinkedIn
           </a>
         </p>
